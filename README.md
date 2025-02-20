@@ -6,6 +6,11 @@ This pipeline is built off of the Substantia Nigra single-nuclei atlas pipeline 
 
 The multiome pipeline was built to take several batches of human brain single-nuclei sequencing samples and process them into a multiome atlas object for further analysis. There are a currently number of hardcoded parameters such as the raw data paths and which cell type markers to be used for annotation. These should be modified for running this pipeline on a separate atlas, future plans are for making a more universal multiome pipeline with a single config file (see https://github.com/adamcatching/multiome-pipeline). The modules of Scanpy (https://github.com/scverse/scanpy), SCVI (https://github.com/scverse/scvi-tools), and snapATAC2 (https://github.com/kaizhang/SnapATAC2) are utilized heavily to produce a multiome atlas with minimal batch effects.
 
+Required inputs:
+-Metadata file in .csv format
+-Cell-typing table with marker genes, in .csv format
+-Directory of the CellRanger output
+
 Current version:
 - Uses Conda environments for each step; _this will be updated to singularity containers at a later point_.
 - Snakemake forces the last step to run through the entire pipeline.
