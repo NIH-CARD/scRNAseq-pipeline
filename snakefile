@@ -3,7 +3,7 @@ import pandas as pd
 # Define the data directory, explicitly
 data_dir = '/data/CARD_singlecell/Brain_atlas/SN_Multiome/'
 # Define the working directory, explictly
-work_dir = '/data/CARD_singlecell/SN_atlas/'
+work_dir = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/'
 
 # Number of threads to use when running the rules
 num_workers = 8
@@ -11,7 +11,7 @@ num_workers = 8
 # Define where the metadata data exists for each sample to be processed
 input_table = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/input/SN_PD_DLB_samples.csv'
 
-# Read in the list of 
+# Read in the list of batches and samples
 batches = pd.read_csv(input_table)['Use_batch'].tolist()
 samples = pd.read_csv(input_table)['Sample'].tolist()
 # Define disease states

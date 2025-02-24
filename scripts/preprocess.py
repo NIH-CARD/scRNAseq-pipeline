@@ -39,20 +39,7 @@ adata.obs.drop('predicted_doublet', axis=1, inplace=True)
 adata.obs['cell_barcode'] = adata.obs_names
 
 # Add metadata to the AnnData object directly from the metadata dataframe
-metadata_dict = {
-    'batch': metadata['Use_batch'],
-    'sex': metadata['Sex'],
-    'age': metadata['Age'],
-    'pmi': metadata['PMI'],
-    'ethnicity': metadata['Ethnicity'],
-    'race': metadata['Race'],
-    'brain_bank': metadata['Brain_bank'],
-    'homogenization': metadata['Homogenizing_batch'],
-    'library': metadata['Library_batch'],
-    'seq': metadata['Sequencing_batch'],
-    'sample': metadata['Sample_ID'],
-    'short diagnosis': metadata['Short Diagnosis']
-}
+metadata_dict = metadata.to_dict()
 
 for key, value in metadata_dict.items():
     adata.obs[key] = value
