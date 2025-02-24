@@ -45,28 +45,28 @@ rule all:
             batch=batches,
             sample=samples
             ),
-"""atac_anndata = expand(
-    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
-    zip,
-    sample=samples,
-    batch=batches
-    ),
-merged_multiome = data_dir + 'atlas/final_multiome_atlas.h5ad',
-output_DGE_data = expand(
-    work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
-    cell_type = cell_types,
-    disease = diseases
-    ),
-output_DAR_data = expand(work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
-    cell_type = cell_types,
-    disease = diseases
-    )"""
+        atac_anndata = expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
+            zip,
+            sample=samples,
+            batch=batches
+            ),
+        merged_multiome = data_dir + 'atlas/multiome_atlas.h5ad',
+        output_DGE_data = expand(
+            work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
+            cell_type = cell_types,
+            disease = diseases
+            ),
+        output_DAR_data = expand(work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+            cell_type = cell_types,
+            disease = diseases
+            )
         
-"""
+
 rule cellbender:
     script:
         work_dir+'scripts/cellbender_array.sh'
-"""   
+
 # ADDING GVCF, QTL, work here
 
 rule preprocess:
@@ -161,9 +161,7 @@ rule atac_preprocess:
     script:
         work_dir+'scripts/atac_preprocess.py'
 
-
-# Get back to this once separate script written
-"""rule merge_unfiltered_atac:
+rule merge_unfiltered_atac:
     input:
         atac_anndata=expand(
             work_dir+'data/samples/{dataset}/01_{dataset}_anndata_object_atac.h5ad', 
@@ -176,7 +174,7 @@ rule atac_preprocess:
     resources:
         runtime=480, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/merge_atac.py'"""
+        work_dir+'scripts/merge_atac.py'
 
 rule plot_qc_atac:
     input:
@@ -202,7 +200,6 @@ rule filter_atac:
     script:
         work_dir+'scripts/atac_filter.py'
 
-
 rule merge_multiome_rna:
     input:
         rna_anndata=expand(
@@ -221,20 +218,6 @@ rule merge_multiome_rna:
         runtime=120, mem_mb=1000000, disk_mb=10000, slurm_partition='largemem' 
     script:
         work_dir+'scripts/merge_anndata.py'
-
-"""rule rna_atac_filter:
-    input:
-        merged_rna_anndata = work_dir+'data/atlas/02_filtered_anndata_rna.h5ad',
-        merged_atac_anndata = work_dir+'data/atlas/02_filtered_anndata_atac.h5ad'
-    output:
-        merged_rna_anndata = work_dir+'data/atlas/03_filtered_anndata_rna.h5ad',
-        merged_atac_anndata = work_dir+'data/atlas/03_filtered_anndata_atac.h5ad'
-    singularity:
-        envs['singlecell']
-    resources:
-        runtime=2880, mem_mb=3000000, slurm_partition='largemem'
-    script:
-        'scripts/filter_rna_atac.py'"""
 
 rule rna_model:
     input:
@@ -325,6 +308,7 @@ rule atac_model:
         runtime=2880, disk_mb=500000, mem_mb=300000, gpu=4
     script:
         'scripts/atac_model.py'
+
 rule atac_annotate:
     input:
         atac_anndata = expand(
@@ -354,19 +338,11 @@ rule multiome_output:
         merged_atac_anndata = data_dir + 'atlas/05_annotated_anndata_atac.h5ad',
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad'
     output:
-        merged_multiome = data_dir + 'atlas/final_multiome_atlas.h5ad'
+        merged_multiome = data_dir + 'atlas/multiome_atlas.h5ad'
     singularity:
         envs['singlecell']
     script:
         'scripts/merge_muon.py'
-
-"""
-rule celltype_atlases:
-    input:
-        merged_atac_anndata = data_dir+'atlas/05_annotated_anndata_atac.h5ad'
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad'
-    output:
-"""
 
 rule DGE:
     input:
