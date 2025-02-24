@@ -11,13 +11,18 @@ Required inputs:
 - Cell-typing table with marker genes, in .csv format
 - Directory of the CellRanger output
 
+Outputs:
+- RNA and ATAC Multiome atlas object (multiome_atlas.h5ad)
+- List of differentially expressed genes and accessible regions (data/significant_genes/(rna or atac)/(celltype)_(disease)_(DGE or DAR).csv
+- Preprocessed and QC-filtered AnnData objects for each sample
+
 Current version:
-- Uses Conda environments for each step; _this will be updated to singularity containers at a later point_.
-- Snakemake forces the last step to run through the entire pipeline.
-- Genes used for cell-typing are hard-coded into the Annotate rule; _this will be updated to a config file in the future_
-- Both RNA and ATAC processing has to be done to run this pipeline; _in the future there will be a modular step to ignore ATAC or replace with other kinds of data (Methylation, proteomics, ...)_.
+- Uses Singularity images for reproducible runs
+- Snakemake runs all steps until all output files are created
+- Genes used for cell-typing are hard-coded into the Annotate rule
+- Both RNA and ATAC processing has to be done to run this pipeline 
 - Requires a metadata .csv file and all values within are saved in the atlas.
-- Data needs to be stored in a specific heirarchy; _an intermediary folder for files will be implemented in the future_.
+- Data needs to be stored in a specific heirarchy
 - Cellbender needs to be run after CellRanger; _once ambient RNA is corrected in future CellRanger-ARC this won't be necessary_.
 - Differential Gene Expression and Differential Accessibility of Regions analysis are done in separate notebooks; _these may be integrated into a rule with differential parameters specified in the config file_.
 
@@ -64,5 +69,4 @@ Cell types of the modeled and clustered RNA atlas are estimated using over-repre
 Using snapATAC2 for only read/write, both create a AnnDataSet object to run batch-corrected spectral analysis and scaling; resulting in a leiden-clustered UMAP AnnData object
 
 ### Merging to one multiome object
-_in progress_
 Both atlases are merged into a single muon AnnData object for portability.
