@@ -9,7 +9,7 @@ work_dir = '/data/CARD_singlecell/SN_atlas/'
 num_workers = 8
 
 # Define where the metadata data exists for each sample to be processed
-input_table = '/data/CARD_singlecell/SN_atlas/input/SN_PD_DLB_samples.csv'
+input_table = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/input/SN_PD_DLB_samples.csv'
 
 # Read in the list of 
 batches = pd.read_csv(input_table)['Use_batch'].tolist()

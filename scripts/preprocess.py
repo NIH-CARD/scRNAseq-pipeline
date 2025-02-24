@@ -3,6 +3,7 @@ import pandas as pd
 import scipy
 import scanpy as sc
 
+print(os.getcwd())
 """
 This script takes the output of either Cellbender or CellRanger and processes into a Anndata object
 with the parameters upon which quality control filtering can be done.

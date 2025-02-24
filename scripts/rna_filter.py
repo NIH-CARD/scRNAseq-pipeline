@@ -1,4 +1,3 @@
-import muon as mu
 import scanpy as sc
 
 # Load in data
@@ -9,13 +8,13 @@ adata = sc.read_h5ad(snakemake.input.rna_anndata) # type: ignore
 # quotes by the value input by the snakemake params value
 
 # Threshold below a given mitochondria percent
-mu.pp.filter_obs(adata, 'pct_counts_mt', lambda x: x <= snakemake.params.mito_percent_thresh)
+adata = adata[adata.obs['pct_counts_mt'] < snakemake.params.mito_percent_thresh].copy()
 # Threshold below a given doublet score
-mu.pp.filter_obs(adata, 'doublet_score', lambda x: x < snakemake.params.doublet_thresh)   
+adata = adata[adata.obs['doublet_score'] < snakemake.params.doublet_thresh].copy()
 # Threshold above a given genes per cell threshold
 adata = adata[adata.obs['n_genes_by_counts'] > snakemake.params.min_genes_per_cell].copy()
 # Threshold below a given ribosome threshold
-mu.pp.filter_obs(adata, 'pct_counts_rb', lambda x: x <= snakemake.params.ribo_percent_thresh)
+adata = adata[adata.obs['pct_counts_rb'] < snakemake.params.ribo_percent_thresh].copy()
 
 if adata.n_obs != 0:
     # Normalize data
