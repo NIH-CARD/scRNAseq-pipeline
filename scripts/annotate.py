@@ -8,20 +8,8 @@ import pandas as pd
 adata = sc.read_h5ad(snakemake.input.merged_rna_anndata)
 
 # Create the DataFrame of canonical gene markers (This can be expanded)
-marker_genes = [
-    ["Oligo", "MOG"],
-    ["OPC", 'PDGFRA'],
-    ["Astro", "AQP4"],
-    ["MG", "ADAM28"],
-    ["EC", "CLDN5"],
-    ["PC", "PDGFRB"],
-    ["InN", "SLC17A7"],
-    ["ExN", "GAD2"],
-    ["DaN", "SLC6A3"],
-    ["TC", "CD3D"]
-]
+marker_genes = pd.read_csv(snakemake.input.gene_markers)
 marker_gene_df = pd.DataFrame(marker_genes)
-marker_gene_df.columns = ['cell type', 'official gene symbol']
 
 # Run over-represenation analysis based on cell markers
 # provided in the marker_gene_df DataFrame.

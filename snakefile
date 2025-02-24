@@ -255,7 +255,8 @@ rule rna_model:
 
 rule annotate:
     input:
-        merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad'
+        merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad',
+        gene_markers = work_dir+'input/marker_genes.csv'
     output:
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
         cell_annotate = work_dir+'data/rna_cell_annot.csv'
