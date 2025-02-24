@@ -11,6 +11,7 @@ module purge
 module load apptainer
 module load snakemake/7.7.0
 
+
 # Decision tree for analysis type
 # 1. Single cell
 # 2. Multiome
@@ -23,15 +24,17 @@ module load snakemake/7.7.0
 # Results directory
 # Location
 
-# Pull profile, this will only run once
+# Pull profile, this will only run once, and is required for running on Biowulf
 git clone https://github.com/NIH-HPC/snakemake_profile.git
 
 # Pull the containers
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu
 
+module load singularity/4.1.5
+
 # RUN SCRIPT
-snakemake --cores all --profile snakemake_profile -n
+snakemake --cores all --profile snakemake_profile --use-singularity --singularity-args "--bind /data/"
 
 #! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
 # - uncomment the --unlock flag above

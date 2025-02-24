@@ -78,6 +78,9 @@ try:
 except:
     print("can't map genes")
 
+# Calculate PCA
+sc.pp.pca(adata)
+
 # Calculate nearest neighbors
 sc.pp.neighbors(adata)
 
