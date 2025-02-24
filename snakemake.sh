@@ -7,16 +7,26 @@
 #SBATCH --gres=gpu:v100x:1
 #SBATCH --array=0-6
 
-# IMPORTS
 module purge
-source myconda
+module load apptainer
 module load snakemake/7.7.0
 
+# Decision tree for analysis type
+# 1. Single cell
+# 2. Multiome
+# 3. Bulk
+# 4. 
+
+# Results for 2
+# QC metric values
+# Data directory
+# Results directory
+# Location
+
+
+
 # RUN SCRIPT
-snakemake \
-    --cores all \
-    --profile profile/snakemake_profile \
-    --use-conda -f annotate #--unlock
+snakemake --cores all --profile profile/snakemake_profile -n
 
 #! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
 # - uncomment the --unlock flag above
