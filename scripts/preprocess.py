@@ -79,15 +79,6 @@ try:
 except:
     print("can't map genes")
 
-# Calculate PCA
-sc.pp.pca(adata)
-
-# Calculate nearest neighbors
-sc.pp.neighbors(adata)
-
-# Calculate UMAP
-sc.tl.umap(adata)
-
 # Save the AnnData object
 adata.write(filename=snakemake.output.rna_anndata, compression='gzip')
 
