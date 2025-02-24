@@ -45,22 +45,22 @@ rule all:
             batch=batches,
             sample=samples
             ),
-        atac_anndata = expand(
-            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
-            zip,
-            sample=samples,
-            batch=batches
-            ),
-        merged_multiome = data_dir + 'atlas/final_multiome_atlas.h5ad',
-        output_DGE_data = expand(
-            work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
-            cell_type = cell_types,
-            disease = diseases
-            ),
-        output_DAR_data = expand(work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
-            cell_type = cell_types,
-            disease = diseases
-            )
+"""atac_anndata = expand(
+    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
+    zip,
+    sample=samples,
+    batch=batches
+    ),
+merged_multiome = data_dir + 'atlas/final_multiome_atlas.h5ad',
+output_DGE_data = expand(
+    work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
+    cell_type = cell_types,
+    disease = diseases
+    ),
+output_DAR_data = expand(work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+    cell_type = cell_types,
+    disease = diseases
+    )"""
         
 """
 rule cellbender:

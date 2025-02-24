@@ -23,10 +23,15 @@ module load snakemake/7.7.0
 # Results directory
 # Location
 
+# Pull profile, this will only run once
+git clone https://github.com/NIH-HPC/snakemake_profile.git
 
+# Pull the containers
+apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
+apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu
 
 # RUN SCRIPT
-snakemake --cores all --profile profile/snakemake_profile -n
+snakemake --cores all --profile snakemake_profile -n
 
 #! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
 # - uncomment the --unlock flag above

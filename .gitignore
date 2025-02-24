@@ -11,6 +11,9 @@ data/old_data/*
 # Don't save the .snakemake logs
 .snakemake
 
+# Don't save the snakemake profile for Biowulf
+snakemake_profile
+
 # No need to save old pipelines (this is version control)
 old_pipelines
 
