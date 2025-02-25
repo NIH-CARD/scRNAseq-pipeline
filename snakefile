@@ -51,7 +51,7 @@ rule all:
             sample=samples,
             batch=batches
             ),
-        merged_multiome = data_dir + 'atlas/multiome_atlas.h5ad',
+        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu',
         output_DGE_data = expand(
             work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
             cell_type = cell_types,
@@ -163,12 +163,14 @@ rule atac_preprocess:
 
 rule merge_unfiltered_atac:
     input:
-        atac_anndata=expand(
-            work_dir+'data/samples/{dataset}/01_{dataset}_anndata_object_atac.h5ad', 
-            dataset=datasets
+        rna_anndata=expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_atac.h5ad', 
+            zip,
+            batch=batches,
+            sample=samples
             )
     output:
-        merged_atac_anndata=work_dir+'data/atlas/01_merged_anndata_atac.h5ad'
+        merged_atac_anndata = data_dir+'atlas/01_merged_anndata_atac.h5ad'
     singularity:
         envs['singlecell']
     resources:
@@ -209,7 +211,7 @@ rule merge_multiome_rna:
             sample=samples
             )
     output:
-        merged_rna_anndata = data_dir+'atlas/03_filtered_anndata_rna.h5ad'
+        merged_atac_anndata = data_dir+'atlas/02_filtered_anndata_atac.h5ad'
     singularity:
         envs['singlecell']
     params:
@@ -338,11 +340,28 @@ rule multiome_output:
         merged_atac_anndata = data_dir + 'atlas/05_annotated_anndata_atac.h5ad',
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad'
     output:
-        merged_multiome = data_dir + 'atlas/multiome_atlas.h5ad'
+        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
     singularity:
         envs['singlecell']
     script:
         'scripts/merge_muon.py'
+
+rule export_celltypes:
+    input:
+        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
+    output:
+        celltype_atac = data_dir + 'data/celltypes/{cell_type}/atac.h5ad',
+        celltype_rna = data_dir + 'data/celltypes/{cell_type}/rna.h5ad'
+    params:
+        cell_type = lambda wildcards, output: output[0].split('/')[-2]
+    singularity:
+        envs['singlecell']
+    threads:
+        8
+    resources:
+        runtime=120, mem_mb=300000
+    script:
+        'scripts/export_celltype.py'
 
 rule DGE:
     input:
