@@ -32,8 +32,6 @@ pdata = dc.get_pseudobulk(
     min_counts=10
 )
 
-pdata.obs['age'] = pdata.obs.age.astype('float')
-
 # Store raw counts in layers
 pdata.layers['counts'] = pdata.X.copy()
 
@@ -51,7 +49,7 @@ pdata.obs['comparison'] = pdata.obs[disease_param]
 
 dc.get_metadata_associations(
     pdata,
-    obs_keys = ['comparison', 'psbulk_n_cells', 'psbulk_counts'],  # Metadata columns to associate to PCs
+    obs_keys = [disease_param, 'psbulk_n_cells', 'psbulk_counts'],  # Metadata columns to associate to PCs
     obsm_key='X_pca',  # Where the PCs are stored
     uns_key='pca_anova',  # Where the results are stored
     inplace=True,
@@ -62,11 +60,12 @@ pdata.write_h5ad(snakemake.output.celltype_pseudobulk)
 
 pdata_genes = dc.filter_by_expr(
     pdata, 
-    group='comparison', 
+    group=disease_param, 
     min_count=10, 
     min_total_count=15
     )
 
+# Subset valuable genes
 pdata = pdata[:, pdata_genes].copy()
 
 # Determine the number of cpus to use
@@ -74,7 +73,7 @@ inference = DefaultInference(n_cpus=64)
 
 dds = DeseqDataSet(
     adata=astrocytes,
-    design_factors=['comparison', 'batch'],
+    design_factors=[disease_param, 'batch'],
     refit_cooks=True,
     inference=inference,
 )
@@ -85,7 +84,7 @@ dds.deseq2()
 # Extract contrast between control and disease states
 stat_res = DeseqStats(
     dds,
-    contrast=["comparison", disease_name, control_name],
+    contrast=[disease_param, disease_name, control_name],
     inference=inference,
 )
 
