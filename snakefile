@@ -65,7 +65,7 @@ rule all:
             sample=samples,
             batch=batches
             ),
-        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu',
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu',
         output_DGE_data = expand(
             work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
             cell_type = cell_types,
@@ -85,13 +85,13 @@ rule cellbender:
 rule preprocess:
     input:
         metadata_table=metadata_table,
-        rna_anndata = data_dir+'batch{batch}/Multiome/{dataset}-ARC/outs/cellbender_gex_counts_filtered.h5'
+        rna_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/cellbender_gex_counts_filtered.h5'
     output:
-        rna_anndata = data_dir+'batch{batch}/Multiome/{dataset}-ARC/outs/01_{dataset}_anndata_object_rna.h5ad'
+        rna_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_rna.h5ad'
     singularity:
         envs['singlecell']
     params:
-        sample='{dataset}'
+        sample='{sample}'
     resources:
         runtime=120, mem_mb=64000, disk_mb=10000, slurm_partition='quick' 
     script:
@@ -106,7 +106,7 @@ rule merge_unfiltered:
             sample=samples
             )
     output:
-        merged_rna_anndata = data_dir+'atlas/01_merged_anndata_rna.h5ad'
+        merged_rna_anndata = work_dir+'/atlas/01_merged_anndata_rna.h5ad'
     singularity:
         envs['singlecell']
     params:
@@ -118,7 +118,7 @@ rule merge_unfiltered:
 
 rule plot_qc_rna:
     input:
-        merged_rna_anndata = data_dir+'atlas/01_merged_anndata_rna.h5ad'
+        merged_rna_anndata = work_dir+'/atlas/01_merged_anndata_rna.h5ad'
     singularity:
         envs['singlecell']
     resources:
@@ -152,7 +152,7 @@ rule merge_filtered_rna:
             sample=samples
             )
     output:
-        merged_rna_anndata = data_dir+'atlas/02_filtered_anndata_rna.h5ad'
+        merged_rna_anndata = work_dir+'/atlas/02_filtered_anndata_rna.h5ad'
     singularity:
         envs['singlecell']
     params:
@@ -183,7 +183,7 @@ rule merge_unfiltered_atac:
             sample=samples
             )
     output:
-        merged_atac_anndata = data_dir+'atlas/01_merged_anndata_atac.h5ad'
+        merged_atac_anndata = work_dir+'/atlas/01_merged_anndata_atac.h5ad'
     singularity:
         envs['singlecell']
     resources:
@@ -224,7 +224,7 @@ rule merge_multiome_rna:
             sample=samples
             )
     output:
-        merged_atac_anndata = data_dir+'atlas/02_filtered_anndata_atac.h5ad'
+        merged_rna_anndata = work_dir+'/atlas/03_filtered_anndata_rna.h5ad'
     singularity:
         envs['singlecell']
     params:
@@ -236,9 +236,9 @@ rule merge_multiome_rna:
 
 rule rna_model:
     input:
-        merged_rna_anndata = data_dir+'atlas/03_filtered_anndata_rna.h5ad'
+        merged_rna_anndata = work_dir+'/atlas/03_filtered_anndata_rna.h5ad'
     output:
-        merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/04_modeled_anndata_rna.h5ad',
         model_history = work_dir+'/model_elbo/rna_model_history.csv'
     params:
         model = work_dir+'/data/models/rna/'
@@ -253,10 +253,10 @@ rule rna_model:
 
 rule annotate:
     input:
-        merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad',
-        gene_markers = work_dir+'/input/marker_genes.csv'
+        merged_rna_anndata = work_dir+'/atlas/04_modeled_anndata_rna.h5ad',
+        gene_markers = gene_markers_file
     output:
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad',
         cell_annotate = work_dir+'/data/rna_cell_annot.csv'
     singularity:
         envs['singlecell']
@@ -275,9 +275,9 @@ rule atac_model:
             sample=samples
             )
     output:
-        umap_data = data_dir+'data/atac_umap.csv',
-        var_data = data_dir+'data/atac_var_selected.csv',
-        merged_atac_anndata = data_dir+'atlas/03_filtered_anndata_atac.h5ad'
+        umap_data = work_dir+'/data/atac_umap.csv',
+        var_data = work_dir+'/data/atac_var_selected.csv',
+        merged_atac_anndata = work_dir+'/atlas/03_filtered_anndata_atac.h5ad'
     params:
         samples=samples
     singularity:
@@ -326,7 +326,7 @@ rule atac_annotate:
         metadata_table = metadata_table
     output:
         atac_anndata = work_dir+'/atlas/04_filtered_anndata_atac.h5ad',
-        merged_atac_anndata = data_dir+'atlas/05_annotated_anndata_atac.h5ad'
+        merged_atac_anndata = work_dir+'/atlas/05_annotated_anndata_atac.h5ad'
     params:
         samples=samples
     singularity:
@@ -338,10 +338,10 @@ rule atac_annotate:
 
 rule multiome_output:
     input:
-        merged_atac_anndata = data_dir+'atlas/05_annotated_anndata_atac.h5ad',
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad'
+        merged_atac_anndata = work_dir+'/atlas/05_annotated_anndata_atac.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
     output:
-        merged_multiome = data_dir+'atlas/multiome_atlas.h5mu'
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
     singularity:
         envs['singlecell']
     script:
@@ -349,7 +349,7 @@ rule multiome_output:
 
 rule export_celltypes:
     input:
-        merged_multiome = data_dir+'atlas/multiome_atlas.h5mu'
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
     output:
         celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
         celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
@@ -366,7 +366,7 @@ rule export_celltypes:
 
 rule DGE:
     input:
-        rna_anndata = data_dir + 'atlas/05_annotated_anndata_rna.h5ad'
+        rna_anndata = work_dir + '/atlas/05_annotated_anndata_rna.h5ad'
     output:
         output_DGE_data = work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
         output_figure = work_dir + 'figures/{cell_type}/rna_{cell_type}_{disease}_DAR.png',
