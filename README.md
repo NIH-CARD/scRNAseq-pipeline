@@ -6,6 +6,10 @@ The workflow was built to minimize the time required to work on processing data 
  
 The modules of Scanpy (https://github.com/scverse/scanpy), SCVI (https://github.com/scverse/scvi-tools), and snapATAC2 (https://github.com/kaizhang/SnapATAC2) are utilized heavily to produce a multiome atlas with minimal batch effects. 
 
+## Pipeline
+
+![screenshot](images/multiome_pipeline.png)
+
 ### To get started
 
 Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in the 
@@ -35,10 +39,6 @@ In addition, the `snakefile` requires modifications to fit your project. The top
 - Data needs to be stored in a specific heirarchy
 - Cellbender needs to be run after CellRanger to compensate for ambient RNA
 - Differential Gene Expression and Differential Accessibility of Regions analysis are done 
-
-## Pipeline
-
-![screenshot](images/multiome_pipeline.png)
 
 Once set up, this complete pipeline can be run by simply typing `bash snakemake.sh` in terminal in an HPC running Slurm. This is a work in progress and has not been tested on other devices. 
 
