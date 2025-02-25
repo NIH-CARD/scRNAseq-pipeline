@@ -14,9 +14,9 @@ work_dir = os.getcwd()
 num_workers = 8
 
 # Define where the metadata data exists for each sample to be processed
-metadata_table = work_dir+'input/example_metadata.csv'
+metadata_table = work_dir+'/input/example_metadata.csv'
 # Define where celltypes/cell marker gene 
-gene_markers_file = work_dir+'input/example_marker_genes.csv'
+gene_markers_file = work_dir+'/input/example_marker_genes.csv'
 
 # Read in the list of batches and samples
 batches = pd.read_csv(metadata_table)['Use_batch'].tolist()
@@ -67,12 +67,12 @@ rule all:
             ),
         merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu',
         output_DGE_data = expand(
-            work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
+            work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
             cell_type = cell_types,
             disease = diseases
             ),
         output_DAR_data = expand(
-            work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+            work_dir + '/data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
             cell_type = cell_types,
             disease = diseases
             )
@@ -80,7 +80,7 @@ rule all:
 # This needs to be forced to run once
 rule cellbender:
     script:
-        work_dir+'scripts/cellbender_array.sh'
+        work_dir+'/scripts/cellbender_array.sh'
 
 rule preprocess:
     input:
@@ -95,7 +95,7 @@ rule preprocess:
     resources:
         runtime=120, mem_mb=64000, disk_mb=10000, slurm_partition='quick' 
     script:
-        work_dir+'scripts/preprocess.py'
+        work_dir+'/scripts/preprocess.py'
 
 rule merge_unfiltered:
     input:
@@ -114,7 +114,7 @@ rule merge_unfiltered:
     resources:
         runtime=240, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/merge_anndata.py'
+        work_dir+'/scripts/merge_anndata.py'
 
 rule plot_qc_rna:
     input:
@@ -124,7 +124,7 @@ rule plot_qc_rna:
     resources:
         runtime=960, mem_mb=500000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/plot_qc_metrics.py'
+        work_dir+'/scripts/plot_qc_metrics.py'
 
 rule filter_rna:
     input:        
@@ -141,7 +141,7 @@ rule filter_rna:
     resources:
         runtime=120, mem_mb=100000, disk_mb=10000, slurm_partition='quick' 
     script: 
-        work_dir+'scripts/rna_filter.py'
+        work_dir+'/scripts/rna_filter.py'
 
 rule merge_filtered_rna:
     input:
@@ -160,7 +160,7 @@ rule merge_filtered_rna:
     resources:
         runtime=120, mem_mb=1000000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/merge_anndata.py'
+        work_dir+'/scripts/merge_anndata.py'
 
 rule atac_preprocess:
     input:
@@ -172,7 +172,7 @@ rule atac_preprocess:
     resources:
         runtime=120, mem_mb=50000, disk_mb=10000, slurm_partition='quick' 
     script:
-        work_dir+'scripts/atac_preprocess.py'
+        work_dir+'/scripts/atac_preprocess.py'
 
 rule merge_unfiltered_atac:
     input:
@@ -189,7 +189,7 @@ rule merge_unfiltered_atac:
     resources:
         runtime=480, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/merge_atac.py'
+        work_dir+'/scripts/merge_atac.py'
 
 rule plot_qc_atac:
     input:
@@ -199,7 +199,7 @@ rule plot_qc_atac:
     resources:
         runtime=240, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem'
     script:
-        work_dir+'scripts/atac_plot_qc.py'
+        work_dir+'/scripts/atac_plot_qc.py'
 
 rule filter_atac:
     input:
@@ -213,7 +213,7 @@ rule filter_atac:
     resources:
         runtime=30, mem_mb=50000, slurm_partition='quick'
     script:
-        work_dir+'scripts/atac_filter.py'
+        work_dir+'/scripts/atac_filter.py'
 
 rule merge_multiome_rna:
     input:
@@ -232,16 +232,16 @@ rule merge_multiome_rna:
     resources:
         runtime=120, mem_mb=1000000, disk_mb=10000, slurm_partition='largemem' 
     script:
-        work_dir+'scripts/merge_anndata.py'
+        work_dir+'/scripts/merge_anndata.py'
 
 rule rna_model:
     input:
         merged_rna_anndata = data_dir+'atlas/03_filtered_anndata_rna.h5ad'
     output:
         merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad',
-        model_history = work_dir+'model_elbo/rna_model_history.csv'
+        model_history = work_dir+'/model_elbo/rna_model_history.csv'
     params:
-        model = work_dir+'data/models/rna/'
+        model = work_dir+'/data/models/rna/'
     singularity:
         envs['singlecell'] # GPU environment needs work: envs['single_cell_gpu']
     threads:
@@ -254,10 +254,10 @@ rule rna_model:
 rule annotate:
     input:
         merged_rna_anndata = data_dir+'atlas/04_modeled_anndata_rna.h5ad',
-        gene_markers = work_dir+'input/marker_genes.csv'
+        gene_markers = work_dir+'/input/marker_genes.csv'
     output:
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
-        cell_annotate = work_dir+'data/rna_cell_annot.csv'
+        cell_annotate = work_dir+'/data/rna_cell_annot.csv'
     singularity:
         envs['singlecell']
     resources:
@@ -278,6 +278,8 @@ rule atac_model:
         umap_data = data_dir+'data/atac_umap.csv',
         var_data = data_dir+'data/atac_var_selected.csv',
         merged_atac_anndata = data_dir+'atlas/03_filtered_anndata_atac.h5ad'
+    params:
+        samples=samples
     singularity:
         envs['atac']
     resources:
@@ -285,7 +287,7 @@ rule atac_model:
     threads:
         64
     script:
-        work_dir+'scripts/merge_atac.py' 
+        work_dir+'/scripts/merge_atac.py' 
 
 """
 # THIS IS EXPERIMENTAL AND NOT QUITE WORKING AND HARDCODED TO TEST EXAMPLE
@@ -297,8 +299,8 @@ rule atac_model:
             sample=samples
             )
     output:
-        atac_umap = work_dir+'data/atac_umap.csv',
-        atac_var = work_dir+'data/atac_var_selected.csv',
+        atac_umap = work_dir+'/data/atac_umap.csv',
+        atac_var = work_dir+'/data/atac_var_selected.csv',
         
     singularity:
         envs['atac']
@@ -314,21 +316,21 @@ rule atac_annotate:
     input:
         atac_anndata = expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
-            sample=samples,
-            batch=batches
+            zip,
+            batch=batches,
+            sample=samples
             ),
-        samples=samples,
-        umap_csv = work_dir + 'data/atac_umap.csv',
-        var_csv = work_dir + 'data/atac_var_selected.csv',
-        annot_csv = work_dir + 'data/rna_cell_annot.csv',
-        metadata_table=metadata_table
+        umap_csv = work_dir+'/data/atac_umap.csv',
+        var_csv = work_dir+'/data/atac_var_selected.csv',
+        annot_csv = work_dir+'/data/rna_cell_annot.csv',
+        metadata_table = metadata_table
     output:
-        temp_atac_anndata = work_dir + 'atlas/04_filtered_anndata_atac.h5ad',
-        merged_atac_anndata = data_dir + 'atlas/05_annotated_anndata_atac.h5ad'
+        atac_anndata = work_dir+'/atlas/04_filtered_anndata_atac.h5ad',
+        merged_atac_anndata = data_dir+'atlas/05_annotated_anndata_atac.h5ad'
+    params:
+        samples=samples
     singularity:
         envs['atac']
-    threads:
-        64
     resources:
         runtime=2880, disk_mb=500000, mem_mb=300000
     script:
@@ -336,10 +338,10 @@ rule atac_annotate:
 
 rule multiome_output:
     input:
-        merged_atac_anndata = data_dir + 'atlas/05_annotated_anndata_atac.h5ad',
+        merged_atac_anndata = data_dir+'atlas/05_annotated_anndata_atac.h5ad',
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad'
     output:
-        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
+        merged_multiome = data_dir+'atlas/multiome_atlas.h5mu'
     singularity:
         envs['singlecell']
     script:
@@ -347,10 +349,10 @@ rule multiome_output:
 
 rule export_celltypes:
     input:
-        merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
+        merged_multiome = data_dir+'atlas/multiome_atlas.h5mu'
     output:
-        celltype_atac = data_dir + 'data/celltypes/{cell_type}/atac.h5ad',
-        celltype_rna = data_dir + 'data/celltypes/{cell_type}/rna.h5ad'
+        celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
+        celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
     params:
         cell_type = lambda wildcards, output: output[0].split('/')[-2]
     singularity:
@@ -366,9 +368,9 @@ rule DGE:
     input:
         rna_anndata = data_dir + 'atlas/05_annotated_anndata_rna.h5ad'
     output:
-        output_DGE_data = work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
+        output_DGE_data = work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
         output_figure = work_dir + 'figures/{cell_type}/rna_{cell_type}_{disease}_DAR.png',
-        celltype_pseudobulk = work_dir + 'data/celltypes/{cell_type}/rna_{cell_type}_{disease}_pseudobulk.h5ad'
+        celltype_pseudobulk = work_dir+'/data/celltypes/{cell_type}/rna_{cell_type}_{disease}_pseudobulk.h5ad'
     params:
         disease_param = disease_param,
         control = control,
@@ -385,10 +387,10 @@ rule DGE:
 
 rule DAR:
     input:
-        atac_anndata = data_dir + 'data/celltypes/{cell_type}/atac.h5ad'
+        atac_anndata = work_dir+'data/celltypes/{cell_type}/atac.h5ad'
     output:
-        output_DAR_data = work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
-        output_figure = work_dir + 'figures/{cell_type}/atac_{cell_type}_{disease}_DAR.png'
+        output_DAR_data = work_dir+'/data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+        output_figure = work_dir+'/figures/{cell_type}/atac_{cell_type}_{disease}_DAR.png'
     params:
         disease_param = disease_param,
         control = control,

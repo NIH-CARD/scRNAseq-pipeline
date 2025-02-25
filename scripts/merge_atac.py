@@ -3,18 +3,17 @@ import pandas as pd
 import numpy as np
 import scanpy as sc
 
-
-# Read list of atac data locations
+# Import the samples
+samples = snakemake.params.samples
 atac_anndata = snakemake.input.atac_anndata
-print(len(atac_anndata))
 
 # Read in snapATAC2 datasets into a list of anndata objects in read only
-list_of_anndata = [(samples_to_keep[i], snap.read(atac_anndata[i])) for i in range(len(atac_anndata))]
+list_of_anndata = [(samples[i], snap.read(atac_anndata[i])) for i in range(len(atac_anndata))]
 
+# Create the AnnDataSet from the snapATAC2 datasets
 anndataset = snap.AnnDataSet(
     adatas=list_of_anndata,
-    filename=snakemake.output.merged_atac_anndata,
-    backed=True
+    filename=atac_anndata
 )
 
 # Update identifiers

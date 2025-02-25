@@ -2,7 +2,7 @@ import snapatac2 as snap
 import pandas as pd
 
 # Import the samples
-samples = snakemake.input.samples
+samples = snakemake.params.samples
 atac_anndata = snakemake.input.atac_anndata
 
 # Read in snapATAC2 datasets into a list of anndata objects in read only
@@ -11,7 +11,7 @@ list_of_anndata = [(samples[i], snap.read(atac_anndata[i])) for i in range(len(a
 # Create the AnnDataSet from the snapATAC2 datasets
 anndataset = snap.AnnDataSet(
     adatas=list_of_anndata,
-    filename=temp_atac_anndata
+    filename=atac_anndata
 )
 
 #
@@ -24,7 +24,7 @@ metadata_dict = {
     'Primary Diagnosis': 'Primary Diagnosis'
 }
 
-metadata_df = pd.read_csv(snakemake.input.input_table)
+metadata_df = pd.read_csv(snakemake.input.metadata_table)
 
 for new_obs, metadata_obs in metadata_dict.items():
     print(new_obs)

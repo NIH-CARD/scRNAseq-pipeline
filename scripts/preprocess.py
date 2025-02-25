@@ -9,7 +9,7 @@ with the parameters upon which quality control filtering can be done.
 """
 
 # Read the samples table once
-samples = pd.read_csv(snakemake.input.input_table)
+samples = pd.read_csv(snakemake.input.metadata_table)
 
 # Extract the metadata for the specific sample in one step
 metadata = samples[samples['Sample_ID'] == snakemake.params.sample].iloc[0]
