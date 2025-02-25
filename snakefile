@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 """========================================================================="""
 """                                 Parameters                              """
@@ -6,20 +7,20 @@ import pandas as pd
 
 # Define the data directory, explicitly
 data_dir = '/data/CARD_singlecell/Brain_atlas/SN_Multiome/'
-# Define the working directory, explictly
-work_dir = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/'
+# Define the working directory, explictly as the directory of this pipeline
+work_dir = os.getcwd()
 
 # Number of threads to use when running the rules
 num_workers = 8
 
 # Define where the metadata data exists for each sample to be processed
-input_table = work_dir+'input/example_metadata.csv'
+metadata_table = work_dir+'input/example_metadata.csv'
 # Define where celltypes/cell marker gene 
 gene_markers_file = work_dir+'input/example_marker_genes.csv'
 
 # Read in the list of batches and samples
-batches = pd.read_csv(input_table)['Use_batch'].tolist()
-samples = pd.read_csv(input_table)['Sample'].tolist()
+batches = pd.read_csv(metadata_table)['Use_batch'].tolist()
+samples = pd.read_csv(metadata_table)['Sample'].tolist()
 
 # Name of the disease parameter
 disease_param = 'Primary Diagnosis'
@@ -44,7 +45,7 @@ min_num_cell_by_counts = 10
 """                                  Workflow                               """
 """========================================================================="""
 
-# Singularity containers to be downloaded from Quay.io, taken care of in bash script
+# Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
     'atac': 'envs/snapATAC2.sif'
@@ -70,7 +71,8 @@ rule all:
             cell_type = cell_types,
             disease = diseases
             ),
-        output_DAR_data = expand(work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+        output_DAR_data = expand(
+            work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
             cell_type = cell_types,
             disease = diseases
             )
@@ -82,7 +84,7 @@ rule cellbender:
 
 rule preprocess:
     input:
-        input_table=input_table,
+        metadata_table=metadata_table,
         rna_anndata = data_dir+'batch{batch}/Multiome/{dataset}-ARC/outs/cellbender_gex_counts_filtered.h5'
     output:
         rna_anndata = data_dir+'batch{batch}/Multiome/{dataset}-ARC/outs/01_{dataset}_anndata_object_rna.h5ad'
@@ -319,7 +321,7 @@ rule atac_annotate:
         umap_csv = work_dir + 'data/atac_umap.csv',
         var_csv = work_dir + 'data/atac_var_selected.csv',
         annot_csv = work_dir + 'data/rna_cell_annot.csv',
-        input_table=input_table
+        metadata_table=metadata_table
     output:
         temp_atac_anndata = work_dir + 'atlas/04_filtered_anndata_atac.h5ad',
         merged_atac_anndata = data_dir + 'atlas/05_annotated_anndata_atac.h5ad'
@@ -343,7 +345,7 @@ rule multiome_output:
     script:
         'scripts/merge_muon.py'
 
-rule export_pseudobulk_celltypes:
+rule export_celltypes:
     input:
         merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
     output:
