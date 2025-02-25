@@ -10,7 +10,7 @@ The modules of Scanpy (https://github.com/scverse/scanpy), SCVI (https://github.
 
 Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in the 
 
-Required inputs:
+#### Required inputs:
 - Metadata file in .csv format, example in `input/example_metadata.csv`. A minimal metadata file should include:
   - Sequencing batch, called Use_batch in example (indicating the separate sequencing folder for each run of `CellRanger-ARC`, denoted batch"Sequencing batch>")
   - Sample ID, called Sample in the example, indicates where name of each sample
@@ -22,12 +22,12 @@ Required inputs:
 
 In addition, the `snakefile` requires modifications to fit your project. The top section "Parameter" should be modified for your dataset, include quality control values, where the input metadata and cell/cell gene marker files are stored. Input files should have their values match the parameters section.
 
-Outputs:
+#### Outputs:
 - RNA and ATAC Multiome atlas object (multiome_atlas.h5ad)
 - List of differentially expressed genes and accessible regions (data/significant_genes/(rna or atac)/(celltype)_(disease)_(DGE or DAR).csv
 - Preprocessed and QC-filtered AnnData objects for each sample
 
-Current version:
+#### Current version:
 - Uses Singularity images for reproducible runs (scVI modeling will be slow until a GPU-enabled image is created)
 - Snakemake runs steps until all output files are created
 - Genes used for celltyping are input from `input/example_marker_genes.csv`
@@ -40,43 +40,55 @@ Current version:
 
 ![screenshot](images/multiome_pipeline.png)
 
-Once set up, this complete pipeline can be run by simply typing '''bash snakemake.sh ''' in terminal in an HPC running Slurm. This is a work in progress and has not been tested on other devices. 
+Once set up, this complete pipeline can be run by simply typing `bash snakemake.sh` in terminal in an HPC running Slurm. This is a work in progress and has not been tested on other devices. 
 
-### RNA processing
+### RNA processing (rule preprocess) 
 
 Transcriptomic data from CellRanger-ARC-2.0 ('''cellbender_gex_counts_filtered.h5''') is read in and processed with Scanpy. QC metrics of percent mitochondria/ribosomal RNA, doublet probability, and cell cycle.
 
-### RNA QC
+### RNA QC (rule filter_rna) 
 
 Parameters from the processing step are used to filter the cells from each samples based on percent mitochondrial transcripts, probability of being a doublet, and the minimum number of genes observed per cell.
 
-### Individual RNA sample merging into atlas
+### Individual RNA sample merging into atlas (rule merge_filtered_rna)
 
-Each individual RNA AnnData object are merged into a single QC-filtered object for downstream analysis.
+Each individual RNA AnnData object are merged into a single QC-filtered object for downstream analysis. This isn't required to be run in a normal workflow.
 
-### ATAC processing
+### ATAC processing (rule atac_preprocess)
 
 ATAC fragment data is converted into an AnnData object with bins used as the measured variable in each cell. One object is created for each sample.
 
-### ATAC QC
+### ATAC QC (rule filter_atac) 
 
 Cells in each sample's ATAC object are filtered for a minimum number of bins per cell. 
 
-### Filtering RNA and ATAC data 
+### Filtering RNA and ATAC data (rule merge_multiome_rna) 
 
 Each sample's QC-filtered RNA and ATAC AnnData objects are filtered for the same cells observed in both samples. Final AnnData objects are saved with a '''03_''' prefix.
 
-### RNA modeling
+### RNA modeling (rule rna_model) 
 
 Filtered RNA samples are merged into an atlas and multidimensional scaling is performed. A copy of the atlas is made with mitochondiral and ribosomal transcripts removed and only the most variable genes kept. SCVI is used to model the embed dimensions of the atlas, with batch correction, followed by KNN, leiden clustering, and UMAP scaling.
 
-### Cell-typing
+### Cell-typing (rule annotate) 
 
 Cell types of the modeled and clustered RNA atlas are estimated using over-representation analysis and a currated list of cell gene markers.
 
-### ATAC modeling
+### ATAC modeling (rule atac_model) 
 
 Using snapATAC2 for only read/write, both create a AnnDataSet object to run batch-corrected spectral analysis and scaling; resulting in a leiden-clustered UMAP AnnData object
 
-### Merging to one multiome object
+### ATAC annotation (rule atac_annotate) 
+
+Map the celltype from the RNA atlas onto the ATAC atlas by cell
+
+### Merging to one multiome object (rule multiome_output) 
+
 Both atlases are merged into a single muon AnnData object for portability.
+
+### Separate atlas into individual celltypes (rule export_celltypes) 
+
+Slice the multiome atlas into individual RNA and ATAC AnnData objects by celltype
+
+### Differential Gene Expression and Differentially Accessible Chromatin (rule DGE and DAR) 
+From the individual RNA and ATAC AnnData objects, separated by celltype, pseudobulk and compare the expression of RNA transcripts and ATAC availability, export lists of genes/genome bins with fold-changes and p-values, as well as pseudobulked objects
