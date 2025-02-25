@@ -39,9 +39,8 @@ sc.external.pp.scrublet(adata, expected_doublet_rate=(adata.n_obs / 1000) * 0.00
 adata.obs.drop('predicted_doublet', axis=1, inplace=True)
 adata.obs['cell_barcode'] = adata.obs_names
 
-# Add metadata to the AnnData object directly from the metadata datafram
-
-for key in metadata.columns.to_list():
+# Add metadata to the AnnData object directly from the metadata dataframe
+for key in metadata.to_dict():
     adata.obs[key] = metadata[key]
 
 # Normalize data
