@@ -13,19 +13,22 @@ work_dir = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/'
 num_workers = 8
 
 # Define where the metadata data exists for each sample to be processed
-input_table = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/input/SN_PD_DLB_samples.csv'
+input_table = work_dir+'input/example_metadata.csv'
+# Define where celltypes/cell marker gene 
+gene_markers_file = work_dir+'input/example_marker_genes.csv'
 
 # Read in the list of batches and samples
 batches = pd.read_csv(input_table)['Use_batch'].tolist()
 samples = pd.read_csv(input_table)['Sample'].tolist()
+
 # Name of the disease parameter
 disease_param = 'Primary Diagnosis'
 # Define disease states
 control = 'control'
 diseases = ['PD', 'DLB']
 
-# Define the cell types to look for
-cell_types = ['Astro', 'DaN', 'ExN', 'EC', 'InN', 'MG', 'OPC', 'Oligo', 'PC', 'TC']
+# Define the cell types to look for, from gene marker file
+cell_types = pd.read_csv(gene_markers_file)['cell type']
 
 # Define RNA thresholds
 mito_percent_thresh = 15
@@ -36,6 +39,10 @@ min_genes_per_cell = 250
 # Define ATAC thresholds
 min_peak_counts = 500
 min_num_cell_by_counts = 10
+
+"""========================================================================="""
+"""                                  Workflow                               """
+"""========================================================================="""
 
 # Singularity containers to be downloaded from Quay.io, taken care of in bash script
 envs = {
@@ -256,23 +263,6 @@ rule annotate:
     script:
         'scripts/annotate.py'
 
-rule SCANVI_annot:
-    input:
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
-        model = work_dir+'data/models/rna'
-    output:
-        merged_rna_anndata = data_dir+'atlas/06_SCVI_anndata_rna.h5ad',
-        model_history = work_dir+'model_elbo/SCANVI_model_history.csv'
-    singularity:
-        envs['singlecell'] # GPU environment needs work: envs['single_cell_gpu']
-    threads:
-        64
-    resources:
-        runtime=2880, disk_mb=500000, mem_mb=300000#, gpu=2, gpu_model='v100x'
-    script:
-        'scripts/SCANVI_annot.py'
-
-
 rule atac_model:
     input:
         cell_annotate = data_dir+'data/rna_cell_annot.csv',
@@ -353,7 +343,7 @@ rule multiome_output:
     script:
         'scripts/merge_muon.py'
 
-rule export_celltypes:
+rule export_pseudobulk_celltypes:
     input:
         merged_multiome = data_dir + 'atlas/multiome_atlas.h5mu'
     output:

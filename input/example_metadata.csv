@@ -1,0 +1,182 @@
+,Unnamed: 0,Sample_ID,Homogenizing_batch,Library_batch,Sequencing_batch,Repeated,Use_batch,Age,PMI,Ethnicity,Race,Brain_bank,Short Diagnosis,Sample,Sex,SampleID,Age_drop,Sex_drop,PMI_drop,Primary Diagnosis,Brain bank
+0,49,2543,2,2,0,0,0,50.5,14.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2543,Male,2543,50.5,Male,14.5,control,HBCC
+1,50,2587,9,8,1,0,1,50.6,25.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2587,Male,2587,50.6,Male,25.5,control,HBCC
+2,51,2287,11,9,1,0,1,50.9,50.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2287,Female,2287,50.9,Female,50.5,control,HBCC
+3,52,1424,15,12,2,0,2,51.6,58.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1424,Male,1424,51.6,Male,58,control,HBCC
+4,53,1431,5,5,0,1,0,51.7,43.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,1431,Male,1431,51.7,Male,43.5,control,HBCC
+5,54,859,1,1,0,1,0,52.2,19.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,859,Male,859,52.2,Male,19.5,control,HBCC
+6,55,1611,16,12,2,0,2,53.6,46.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,1611,Female,1611,53.6,Female,46.5,control,HBCC
+7,56,2513,13,11,2,1,2,54.5,37.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2513,Male,2513,54.5,Male,37,control,HBCC
+8,57,1832,17,13,3,1,2,54.9,27.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1832,Male,1832,54.9,Male,27,control,HBCC
+9,58,2076,6,6,0,0,0,56.5,24.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2076,Male,2076,56.5,Male,24,control,HBCC
+10,59,2605,6,6,0,0,0,57.4,30.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2605,Female,2605,57.4,Female,30.5,control,HBCC
+11,60,2304,13,11,2,0,2,57.9,55.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2304,Male,2304,57.9,Male,55.5,control,HBCC
+12,61,894,1,1,0,0,0,58.0,24.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,894,Female,894,58.0,Female,24,control,HBCC
+13,62,2927,5,5,0,1,0,58.1,24.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2927,Female,2927,58.1,Female,24.0,control,HBCC
+14,63,1285,3,3,0,0,0,58.2,53.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1285,Male,1285,58.2,Male,53,control,HBCC
+15,64,2575,12,10,2,0,2,59.7,27.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2575,Male,2575,59.7,Male,27.0,control,HBCC
+16,65,2703,4,4,0,1,0,59.9,60.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2703,Male,2703,59.9,Male,60.5,control,HBCC
+17,66,51502,23,17,4,0,4,60.0,26.2,,White,Mount Sinai NBTR,Control,51502,Male,51502,60.0,Male,26.2,control,Mt. Sinai
+18,67,4276,17,13,3,0,3,60.0,7.1,English,White,Human Brain and Spinal Fluid Resource Center,Control,4276,Female,4276,60.0,Female,7.1,control,Human Brain and Spinal Fluid Resource Center
+19,68,HCTZS,26,18,4,0,4,60.0,27.62,,White,Miami,Control,HCTZS,Male,HCTZS,60.0,Male,27.62,control,Miami
+20,69,1135,4,4,0,1,0,60.4,44.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1135,Male,1135,60.4,Male,44,control,HBCC
+21,70,2454,12,10,2,1,2,60.6,46.5,Not Hispanic or Latino,White,HBCC,Control,2454,Female,2454,60.6,Female,46.5,control,HBCC
+22,71,1275,13,11,2,0,2,60.8,13.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1275,Male,1275,60.8,Male,13,control,HBCC
+23,72,55015,23,17,4,0,4,61.0,11.1,,White,Mount Sinai NBTR,Control,55015,Male,55015,61.0,Male,11.1,control,Mt. Sinai
+24,73,1537,11,9,1,0,1,61.2,24.5,Not Hispanic or Latino,White,HBCC,Control,1537,Female,1537,61.2,Female,24.5,control,HBCC
+25,74,1654,13,11,2,0,2,62.3,46.5,Not Hispanic or Latino,White,HBCC,Control,1654,Male,1654,62.3,Male,46.5,control,HBCC
+26,75,1297,15,12,2,0,2,62.8,37.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1297,Male,1297,62.8,Male,37,control,HBCC
+27,76,1023,17,13,3,0,3,63.0,52.75,Not Hispanic or Latino,White,HBCC,Control,1023,Male,1023,63.0,Male,52.75,control,HBCC
+28,77,33987,20,15,3,0,3,63.0,7.8,,White,Mount Sinai NBTR,Control,33987,Male,33987,63.0,Male,7.8,control,Mt. Sinai
+29,78,6119,16,12,2,0,2,63.0,16.5,English,White,Human Brain and Spinal Fluid Resource Center,Control,6119,Female,6119,63.0,Female,16.5,control,Human Brain and Spinal Fluid Resource Center
+30,79,2322,3,3,0,0,0,63.5,49.5,Not Hispanic or Latino,White,HBCC,Control,2322,Male,2322,63.5,Male,49.5,control,HBCC
+31,80,638682,17,13,3,0,3,64.0,13.8,,White,Mount Sinai NBTR,Control,638682,Male,638682,64.0,Male,13.8,control,Mt. Sinai
+32,81,1494,11,9,1,0,1,65.0,57.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,1494,Female,1494,65.0,Female,57.5,control,HBCC
+33,82,2689,11,9,1,0,1,65.0,28.0,Not Hispanic or Latino,White,HBCC,Control,2689,Female,2689,65.0,Female,28.0,control,HBCC
+34,83,5931,17,13,3,0,3,65.0,17.25,English,White,Human Brain and Spinal Fluid Resource Center,Control,5931,Female,5931,65.0,Female,17.25,control,Human Brain and Spinal Fluid Resource Center
+35,84,BEB21104,27,19,4,0,4,65.0,11.53,,White,Miami,Control,BEB21104,Male,BEB21104,65.0,Male,11.53,control,Miami
+36,85,2053,9,8,1,0,1,65.6,50.75,Not Hispanic or Latino,Black or African-American,HBCC,Control,2053,Male,2053,65.6,Male,50.75,control,HBCC
+37,86,6038,7,7,1,0,1,66.0,12.8,German/French,White,Human Brain and Spinal Fluid Resource Center,Control,6038,Male,6038,66.0,Male,12.8,control,Human Brain and Spinal Fluid Resource Center
+38,87,2936,2,2,0,0,0,66.1,30.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2936,Female,2936,66.1,Female,30.0,control,HBCC
+39,88,BEB19019,25,18,4,0,4,67.0,12.4,,White,Miami,Control,BEB19019,Male,BEB19019,67.0,Male,12.4,control,Miami
+40,89,6178,7,7,1,1,6,68.0,22.5,,White,Human Brain and Spinal Fluid Resource Center,Control,6178,Male,6178,68.0,Male,22.5,control,Human Brain and Spinal Fluid Resource Center
+41,90,1615,14,11,2,0,2,71.8,25.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,1615,Female,1615,71.8,Female,25,control,HBCC
+42,91,458379,22,16,3,0,3,72.0,20.0,,White,Mount Sinai NBTR,Control,458379,Male,458379,72.0,Male,20.0,control,Mt. Sinai
+43,92,31556,20,15,3,0,3,73.0,23.9,,White,Mount Sinai NBTR,Control,31556,Female,31556,73.0,Female,23.9,control,Mt. Sinai
+44,93,2003,12,10,2,0,2,73.9,11.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,2003,Male,2003,73.9,Male,11,control,HBCC
+45,94,5695,7,7,1,0,1,74.0,15.6,English,White,Human Brain and Spinal Fluid Resource Center,Control,5695,Male,5695,74.0,Male,15.6,control,Human Brain and Spinal Fluid Resource Center
+46,95,S14752,11,9,1,0,1,76.0,12.25,,,HBCC,Control,S14752,Male,S14752,76.0,Male,12.25,control,Harvard
+47,96,1613,18,13,3,0,3,78.0,21.5,Not Hispanic or Latino,White,HBCC,Control,1613,Male,1613,78.0,Male,21.5,control,HBCC
+48,97,3284,8,7,1,0,1,78.0,11.5,German,White,Human Brain and Spinal Fluid Resource Center,Control,3284,Female,3284,78.0,Female,11.5,control,Human Brain and Spinal Fluid Resource Center
+49,98,5967,13,11,2,0,2,78.0,19.8,English/German,White,Human Brain and Spinal Fluid Resource Center,Control,5967,Female,5967,78.0,Female,19.8,control,Human Brain and Spinal Fluid Resource Center
+50,99,5769,12,10,2,0,2,80.0,7.0,German,White,Human Brain and Spinal Fluid Resource Center,Control,5769,Male,5769,80.0,Male,7,control,Human Brain and Spinal Fluid Resource Center
+51,100,S15709,14,11,2,0,2,81.0,26.13,,White,Harvard,Control,S15709,Female,S15709,81.0,Female,26.13,control,Harvard
+52,101,43750,24,17,4,0,4,81.0,6.0,,White,Mount Sinai NBTR,Control,43750,Female,43750,81.0,Female,6.0,control,Mt. Sinai
+53,102,45135,18,13,3,0,3,83.0,4.0,,White,Mount Sinai NBTR,Control,45135,Female,45135,83.0,Female,4,control,Mt. Sinai
+54,103,2026,5,5,0,1,0,83.5,32.0,Not Hispanic or Latino,White,HBCC,Control,2026,Male,2026,83.5,Male,32,control,HBCC
+55,104,3698,15,12,2,0,2,84.0,,English,White,Human Brain and Spinal Fluid Resource Center,Control,3698,Female,3698,84.0,Female,,control,Human Brain and Spinal Fluid Resource Center
+56,105,2539,16,12,2,0,2,84.2,27.5,Not Hispanic or Latino,Black or African-American,HBCC,Control,2539,Male,2539,84.2,Male,27.5,control,HBCC
+57,106,831,1,1,0,0,0,85.2,44.0,Not Hispanic or Latino,Black or African-American,HBCC,Control,831,Male,831,85.2,Male,44,control,HBCC
+58,107,S05135,8,7,1,0,1,86.0,31.72,,White,Havard,Control,S05135,Male,S05135,86.0,Male,31.72,control,Havard
+59,108,3857,7,7,1,0,1,86.0,13.9,German/Irish,White,Human Brain and Spinal Fluid Resource Center,Control,3857,Female,3857,86.0,Female,13.9,control,Human Brain and Spinal Fluid Resource Center
+60,109,HCTZZV,25,18,4,0,4,86.0,25.11,,White,Miami,Control,HCTZZV,Female,HCTZZV,86.0,Female,25.11,control,Miami
+61,110,6118,8,7,1,0,1,88.0,24.0,European,White,Human Brain and Spinal Fluid Resource Center,Control,6118,Male,6118,88.0,Male,24,control,Human Brain and Spinal Fluid Resource Center
+62,111,6087,7,7,1,0,1,93.0,21.7,English/German,White,Human Brain and Spinal Fluid Resource Center,Control,6087,Male,6087,93.0,Male,21.7,control,Human Brain and Spinal Fluid Resource Center
+63,112,BEB20008,28,19,5,0,5,97.0,7.11,,White,Miami,Control,BEB20008,Female,BEB20008,97.0,Female,7.11,control,Miami
+64,113,PT13122,36,24,6,0,6,68.0,26.5,,Black or African-American,Pittsburgh,Control,PT13122,Female,PT13122,68.0,Female,26.5,control,Pittsburgh
+65,114,PT13440,36,24,6,0,6,68.0,17.1,,Black or African-American,Pittsburgh,Control,PT13440,Male,PT13440,68.0,Male,17.1,control,Pittsburgh
+66,115,PT13449,36,24,6,0,6,75.0,21.9,,White,Pittsburgh,Control,PT13449,Male,PT13449,75.0,Male,21.9,control,Pittsburgh
+67,116,PT13818,36,24,6,0,6,67.0,10.87,,Black or African-American,Pittsburgh,Control,PT13818,Male,PT13818,67.0,Male,10.87,control,Pittsburgh
+68,117,6384,21,15,3,0,3,50.0,22.3,,Asian,Sepulveda,PD,6384,Female,6384,50.0,Female,22.3,PD,Sepulveda
+69,118,S11602,16,12,2,0,2,57.0,10.57,,White,Harvard,PD,S11602,Male,S11602,57.0,Male,10.57,PD,Harvard
+70,119,4625,11,9,1,0,1,60.0,18.2,,White,Human Brain and Spinal Fluid Resource Center,PD,4625,Female,4625,60.0,Female,18.2,PD,Human Brain and Spinal Fluid Resource Center
+71,120,4371,14,11,2,1,2,65.0,20.3,French/American Indian/ Irish,Mixed Race,Human Brain and Spinal Fluid Resource Center,PD,4371,Male,4371,65.0,Male,20.3,PD,Human Brain and Spinal Fluid Resource Center
+72,121,4809,8,7,1,1,1,65.0,28.9,English,White,Human Brain and Spinal Fluid Resource Center,DLB/PD,4809,Male,4809,65.0,Male,28.9,PD,Human Brain and Spinal Fluid Resource Center
+73,122,5354,16,12,2,0,2,65.0,6.8,Mexican,Hispanic or Latino,Human Brain and Spinal Fluid Resource Center,PSP,5354,Female,5354,65.0,Female,6.8,PD,Human Brain and Spinal Fluid Resource Center
+74,123,6020,18,13,3,0,3,65.0,18.5,Hispanic or Latino,Spanish,Human Brain and Spinal Fluid Resource Center,PD,6020,Female,6020,65.0,Female,18.5,PD,Human Brain and Spinal Fluid Resource Center
+75,124,6543,21,15,3,0,3,67.0,31.9,,Black or African-American,Sepulveda,DLB,6543,Female,6543,67.0,Female,31.9,PD,Sepulveda
+76,125,6176,21,15,3,0,3,68.0,13.9,,Asian,Sepulveda,PD,6176,Male,6176,68.0,Male,13.9,PD,Sepulveda
+77,126,6127,2,2,0,0,0,71.0,,Not Hispanic or Latino,White,University of Maryland Brain and Tissue Bank,DLB,6127,Male,6127,71.0,Male,,DLB,University of Maryland Brain and Tissue Bank
+78,127,23166,21,15,3,0,3,72.0,37.2,,Black or African-American,Mount Sinai NBTR,PD,23166,Male,23166,72.0,Male,37.2,PD,Mt. Sinai
+79,128,3290,20,15,3,0,3,73.0,10.2,Hispanic or Latino,,Sepulveda,PD,3290,Female,3290,73.0,Female,10.2,PD,Sepulveda
+80,129,S04301,7,7,1,0,1,74.0,22.75,,White,Harvard,PD,S04301,Male,S04301,74.0,Male,22.75,PD,Harvard
+81,130,S14041,8,7,1,0,1,74.0,19.5,,White,Harvard,PD,S14041,Male,S14041,74.0,Male,19.5,PD,Harvard
+82,131,6243,21,15,3,0,3,74.0,14.0,,Black or African-American,Maryland,DLB,6243,Male,6243,74.0,Male,14,DLB,Maryland
+83,132,6594,21,15,3,0,3,74.0,27.2,,Asian,Sepulveda,PD,6594,Male,6594,74.0,Male,27.2,PD,Sepulveda
+84,133,4076,10,9,1,0,1,75.0,9.0,Not Known,White,Human Brain and Spinal Fluid Resource Center,PD,4076,Female,4076,75.0,Female,9,PD,Human Brain and Spinal Fluid Resource Center
+85,134,86015,7,7,1,0,1,77.0,2.3,,White,Mount Sinai NBTR,AD/PD,86015,Male,86015,77.0,Male,2.3,PD,Mt. Sinai
+86,135,4695,12,10,2,0,2,77.0,16.5,Hispanic or Latino,Mexican,Human Brain and Spinal Fluid Resource Center,PD,4695,Female,4695,77.0,Female,16.5,PD,Human Brain and Spinal Fluid Resource Center
+87,136,5945,18,13,3,0,3,77.0,11.75,Hispanic or Latino,Puerto Rican,Human Brain and Spinal Fluid Resource Center,DLB/PSP,5945,Male,5945,77.0,Male,11.75,DLB,Human Brain and Spinal Fluid Resource Center
+88,138,5638,22,16,3,0,3,77.0,19.3,,Black or African-American,Sepulveda,PD,5638,Male,5638,77.0,Male,19.3,PD,Sepulveda
+89,139,6343,21,15,3,0,3,77.0,21.2,,Asian,Sepulveda,PD,6343,Male,6343,77.0,Male,21.2,PD,Sepulveda
+90,140,S00678,12,10,2,0,2,78.0,33.28,,White,Harvard,MSA,S00678,Male,S00678,78.0,Male,33.28,PD,Harvard
+91,141,5618,20,15,3,0,3,78.0,8.0,Hispanic or Latino,,Sepulveda,AD/PD,5618,Male,5618,78.0,Male,8,PD,Sepulveda
+92,142,550500,20,15,3,0,3,79.0,4.6,,White,Mount Sinai NBTR,PD,550500,Male,550500,79.0,Male,4.6,PD,Mt. Sinai
+93,143,79546,21,15,3,0,3,79.0,34.6,,Black or African-American,Mount Sinai NBTR,PD,79546,Male,79546,79.0,Male,34.6,PD,Mt. Sinai
+94,144,5449,17,13,3,0,3,79.0,9.6,Black/Irish/Native American,Black or African-American,Human Brain and Spinal Fluid Resource Center,DLB,5449,Male,5449,79.0,Male,9.6,DLB,Human Brain and Spinal Fluid Resource Center
+95,145,4704,15,12,2,0,2,81.0,17.1,English,White,Human Brain and Spinal Fluid Resource Center,AD/DLB/PD/MSA,4704,Male,4704,81.0,Male,17.1,PD,Human Brain and Spinal Fluid Resource Center
+96,146,5834,20,15,3,1,3,81.0,34.5,Hispanic or Latino,,Sepulveda,PD,5834,Male,5834,81.0,Male,34.5,PD,Sepulveda
+97,147,13670,22,16,3,0,3,83.0,2.8,,Black or African-American,Mount Sinai NBTR,DLB/AD,13670,Male,13670,83.0,Male,2.8,DLB,Mt. Sinai
+98,148,4439,7,7,1,1,1,83.0,20.6,Spanish,Hispanic or Latino,Human Brain and Spinal Fluid Resource Center,DLB/AD,4439,Female,4439,83.0,Female,20.6,PD,Human Brain and Spinal Fluid Resource Center
+99,149,S03822,9,8,1,0,1,83.0,24.0,,White,Harvard,PD,S03822,Female,S03822,83.0,Female,24,PD,Harvard
+100,150,6216,20,15,3,0,3,93.0,24.0,Asian,Asian,Maryland,PD,6216,Female,6216,93.0,Female,24,PD,Maryland
+101,151,BEB21093,22,16,3,0,3,81.0,26.85,Hispanic or Latino,,Miami,DLB/AD,BEB21093,Female,BEB21093,81.0,Female,26.85,DLB,Miami
+102,152,BEB21099,22,16,3,1,6,87.0,26.66,Hispanic or Latino,,Miami,DLB/AD,BEB21099,Female,BEB21099,87.0,Female,26.66,DLB,Miami
+103,153,BEB21128,23,17,4,0,4,76.0,5.56,Hispanic or Latino,,Miami,DLB,BEB21128,Female,BEB21128,76.0,Female,5.56,DLB,Miami
+104,154,HBDJ,22,16,3,1,6,83.0,27.72,Hispanic or Latino,,Miami,DLB,HBDJ,Male,HBDJ,83.0,Male,27.72,DLB,Miami
+105,155,HBJR,22,16,3,0,3,73.0,7.71,Hispanic or Latino,,Miami,DLB,HBJR,Female,HBJR,73.0,Female,7.71,DLB,Miami
+106,156,HBED,23,17,4,0,4,71.0,30.05,,White,Miami,AD/DLB/PD,HBED,Female,HBED,71.0,Female,30.05,PD,Miami
+107,157,HBBW,23,17,4,0,4,79.0,27.37,,White,Miami,AD/DLB/PD,HBBW,Male,HBBW,79.0,Male,27.37,PD,Miami
+108,161,HBQH,26,18,4,0,4,78.0,6.82,,White,Miami,AD/DLB/PD,HBQH,Male,HBQH,78.0,Male,6.82,PD,Miami
+109,162,J1922,23,17,4,0,4,86.0,6.0,,Black or African-American,JHU,DLB/AD,J1922,Male,J1922,86.0,Male,6,DLB,JHU
+110,164,J2413,24,17,4,0,4,78.0,11.0,,Black or African-American,JHU,DLB/AD,J2413,Male,J2413,78.0,Male,11,DLB,JHU
+111,165,J2573,23,17,4,0,4,69.0,17.0,,Asian,JHU,DLB/AD,J2573,Male,J2573,69.0,Male,17,DLB,JHU
+112,166,J2834,24,17,4,0,4,82.0,18.0,,Asian,JHU,DLB,J2834,Female,J2834,82.0,Female,18,DLB,JHU
+113,167,J2842,24,17,4,0,4,69.0,12.0,,Black or African-American,JHU,DLB/LATE,J2842,Male,J2842,69.0,Male,12,DLB,JHU
+114,168,J2938,24,17,4,0,4,73.0,13.0,,Black or African-American,JHU,DLB/AD,J2938,Male,J2938,73.0,Male,13,DLB,JHU
+115,169,83417,25,18,4,0,4,77.0,33.5,Hispanic or Latino,,Mt. Sinai,PD,83417,Male,83417,77.0,Male,33.5,PD,Mt. Sinai
+116,170,98126,25,18,4,0,4,70.0,6.08,,Black or African-American,Mt. Sinai,DLB,98126,Female,98126,70.0,Female,6.08,DLB,Mt. Sinai
+117,171,805094,25,18,4,0,4,81.0,7.22,,Asian,Mt. Sinai,DLB,805094,Male,805094,81.0,Male,7.22,DLB,Mt. Sinai
+118,172,19808,28,19,5,0,5,82.0,48.57,,Black or African-American,Mt. Sinai,PD,19808,Male,19808,82.0,Male,48.57,PD,Mt. Sinai
+119,173,34966,28,19,5,0,5,67.0,5.5,,Hispanic or Latino,Mt. Sinai,DLB,34966,Male,34966,67.0,Male,5.5,DLB,Mt. Sinai
+120,174,64035,26,18,4,0,4,83.0,41.25,,Black or African-American,Mt. Sinai,DLB/AD,64035,Female,64035,83.0,Female,41.25,DLB,Mt. Sinai
+121,175,71187,28,19,5,0,5,92.0,2.93,,Black or African-American,Mt. Sinai,DLB/AD,71187,Male,71187,92.0,Male,2.93,DLB,Mt. Sinai
+122,176,40623,25,18,4,0,4,89.0,5.25,,Black or African-American,Mt. Sinai,PD,40623,Female,40623,89.0,Female,5.25,PD,Mt. Sinai
+123,177,51851,26,18,4,0,4,97.0,48.42,,Black or African-American,Mt. Sinai,DLB,51851,Female,51851,97.0,Female,48.42,DLB,Mt. Sinai
+124,178,44376,26,18,4,0,4,88.0,2.75,,Black or African-American,Mt. Sinai,DLB,44376,Female,44376,88.0,Female,2.75,DLB,Mt. Sinai
+125,179,89468,27,19,4,0,4,76.0,7.0,,Black or African-American,Mt. Sinai,DLB,89468,Male,89468,76.0,Male,7,DLB,Mt. Sinai
+126,180,45340,26,18,4,0,4,90.0,14.58,Hispanic or Latino,,Mt. Sinai,DLB/AD,45340,Male,45340,90.0,Male,14.58,DLB,Mt. Sinai
+127,181,61350,29,20,5,0,5,85.0,8.25,,Black or African-American,Mt. Sinai,AD/PD,61350,Female,61350,85.0,Female,8.25,PD,Mt. Sinai
+128,182,84578,27,19,4,0,4,86.0,17.83,,Black or African-American,Mt. Sinai,DLB,84578,Female,84578,86.0,Female,17.83,DLB,Mt. Sinai
+129,183,85097,27,19,4,0,4,72.0,4.08,,Asian,Mt. Sinai,PD,85097,Female,85097,72.0,Female,4.08,PD,Mt. Sinai
+130,184,88743,27,19,4,0,4,75.0,2.07,,Black or African-American,Mt. Sinai,DLB,88743,Male,88743,75.0,Male,2.07,DLB,Mt. Sinai
+131,185,4049,17,13,3,0,3,70.0,7.8,Hispanic or Latino,Mexican,Human Brain and Spinal Fluid Resource Center,STROKE,4049,Female,4049,70.0,Female,7.8,PD,Human Brain and Spinal Fluid Resource Center
+132,187,bb21005,25,18,4,0,4,86.0,,,Asian-American,Mayo Clinic,DLB,bb21005,Male,bb21005,86.0,Male,,DLB,Mayo Clinic
+133,188,bb21394,25,18,4,0,4,89.0,,,Asian-American,Mayo Clinic,DLB,bb21394,Female,bb21394,89.0,Female,,DLB,Mayo Clinic
+134,189,bb02185,26,18,4,0,4,73.0,,Hispanic or Latino,,Mayo Clinic,DLB,bb02185,Female,bb02185,73.0,Female,,DLB,Mayo Clinic
+135,190,bb07303,26,18,4,0,4,78.0,,Hispanic or Latino,,Mayo Clinic,DLB,bb07303,Male,bb07303,78.0,Male,,DLB,Mayo Clinic
+136,191,bb12463,27,19,4,0,4,69.0,,,Black or African-American,Mayo Clinic,DLB,bb12463,Male,bb12463,69.0,Male,,DLB,Mayo Clinic
+137,192,bb09025,27,19,4,0,4,79.0,,Hispanic or Latino,,Mayo Clinic,DLB,bb09025,Male,bb09025,78.0,Male,,DLB,Mayo Clinic
+138,193,bb10333,27,19,4,0,4,77.0,,,Asian-American,Mayo Clinic,PDD,bb10333,Male,bb10333,77.0,Male,,DLB,Mayo Clinic
+139,194,bb14055,28,19,5,0,5,67.0,,,Hispanic or Latino,Mayo Clinic,PDD,bb14055,Female,bb14055,67.0,Female,,DLB,Mayo Clinic
+140,195,bb14204,28,19,5,0,5,77.0,,Hispanic or Latino,,Mayo Clinic,DLB,bb14204,Male,bb14204,77.0,Male,,DLB,Mayo Clinic
+141,196,bb16395,28,19,5,0,5,75.0,,,Eastern Indian,Mayo Clinic,DLB,bb16395,Female,bb16395,75.0,Female,,DLB,Mayo Clinic
+142,198,bb06011,29,20,5,1,7,78.0,,,Black or African-American,Mayo Clinic,DLB,bb06011,Female,bb06011,78.0,Female,,DLB,Mayo Clinic
+143,201,bb10018,29,20,5,1,7,68.0,,Hispanic or Latino,,Mayo Clinic,DLB,bb10018,Male,bb10018,68.0,Male,,DLB,Mayo Clinic
+144,202,bb11492,29,20,5,1,7,97.0,,,Black or African-American,Mayo Clinic,AD,bb11492,Female,bb11492,97.0,Female,,DLB,Mayo Clinic
+145,203,bb15293,29,20,5,1,7,80.0,,,Black or African-American,Mayo Clinic,DLB,bb15293,Male,bb15293,80.0,Male,,DLB,Mayo Clinic
+146,204,bb18415,30,20,5,1,7,79.0,,,Native American,Mayo Clinic,PD,bb18415,Male,bb18415,79.0,Male,,PD,Mayo Clinic
+147,205,bb20060,30,20,5,0,5,58.0,,,Black or African-American,Mayo Clinic,PDD,bb20060,Male,bb20060,58.0,Male,,DLB,Mayo Clinic
+148,208,bb22368,30,20,5,0,5,80.0,,,Black or African-American,Mayo Clinic,LBD,bb22368,Male,bb22368,80.0,Male,,DLB,Mayo Clinic
+149,210,bb17327,30,20,5,1,7,88.0,,,Eastern Indian,Mayo Clinic,PD,bb17327,Male,bb17327,88.0,Male,,PD,Mayo Clinic
+150,211,bb16189,30,20,5,1,7,77.0,,Hispanic or Latino,,Mayo Clinic,PD,bb16189,Male,bb16189,77.0,Male,,PD,Mayo Clinic
+151,212,bb96078,31,21,5,1,7,66.0,,Hispanic or Latino,,Mayo Clinic,PD,bb96078,Male,bb96078,66.0,Male,,PD,Mayo Clinic
+152,213,UM0139,31,21,5,1,7,71.0,14.0,,White,U Michigan,PDD,UM0139,Male,UM0139,71.0,Male,14,DLB,U Michigan
+153,214,UM0309,31,21,5,1,7,80.0,4.0,,White,U Michigan,PDD,UM0309,Female,UM0309,80.0,Female,4,DLB,U Michigan
+154,215,UM0645,31,21,5,1,7,57.0,9.0,,White,U Michigan,PDD,UM0645,Female,UM0645,57.0,Female,9,DLB,U Michigan
+155,216,UM0456,31,21,5,1,7,86.0,12.0,,White,U Michigan,PDD,UM0456,Male,UM0456,86.0,Male,12,DLB,U Michigan
+156,217,UM0421,31,21,5,1,7,69.0,5.0,,White,U Michigan,PDD,UM0421,Male,UM0421,69.0,Male,5,DLB,U Michigan
+157,218,UM1365,31,21,5,1,7,71.0,4.0,,White,U Michigan,PDD,UM1365,Male,UM1365,71.0,Male,4,DLB,U Michigan
+158,219,UM1665,31,21,5,1,7,66.0,15.0,,White,U Michigan,PDD,UM1665,Male,UM1665,66.0,Male,15,DLB,U Michigan
+159,220,UM0553,32,21,5,1,7,79.0,5.0,,White,U Michigan,PDD,UM0553,Female,UM0553,79.0,Female,5,PD,U Michigan
+160,221,UM0689,35,23,6,1,6,87.0,13.0,,Black or African-American,U Michigan,PDD,UM0689,Male,UM0689,87.0,Male,13,DLB,U Michigan
+161,222,UM0744,32,21,5,1,7,82.0,10.0,,White,U Michigan,PDD,UM0744,Male,UM0744,82.0,Male,10,DLB,U Michigan
+162,223,UM0105,32,21,5,1,7,82.0,16.0,,White,U Michigan,PDD,UM0105,Female,UM0105,82.0,Female,16,DLB,U Michigan
+163,224,UM0681,32,21,5,1,7,84.0,6.0,,White,U Michigan,PDD,UM0681,Female,UM0681,84.0,Female,6,DLB,U Michigan
+164,225,UM1083,32,21,5,1,7,83.0,6.0,,White,U Michigan,PDD,UM1083,Female,UM1083,83.0,Female,6,DLB,U Michigan
+165,226,UM0153,32,21,5,1,7,85.0,8.0,,Black or African-American,U Michigan,PDD,UM0153,Male,UM0153,85.0,Male,8,DLB,U Michigan
+166,227,UM0673,32,21,5,1,7,69.0,8.0,,White,U Michigan,PDD,UM0673,Male,UM0673,69.0,Male,8,DLB,U Michigan
+167,228,UM0697,33,22,5,0,5,66.0,8.0,,White,U Michigan,PDD,UM0697,Male,UM0697,66.0,Male,8,DLB,U Michigan
+168,229,UM1371,33,22,6,0,6,68.0,20.0,,White,U Michigan,PDD,UM1371,Male,UM1371,68.0,Male,20,DLB,U Michigan
+169,230,UM0152,33,22,6,0,6,79.0,9.0,,White,U Michigan,PDD,UM0152,Female,UM0152,79.0,Female,9,DLB,U Michigan
+170,231,UM1044,35,23,6,1,6,83.0,5.0,,white,U Michigan,PDD,UM1044,Male,UM1044,83.0,Male,5,DLB,U Michigan
+171,232,UM2180,33,22,6,0,6,92.0,11.0,,White,U Michigan,PDD,UM2180,Male,UM2180,92.0,Male,11,DLB,U Michigan
+172,233,UM0867,33,22,6,0,6,92.0,11.0,,White,U Michigan,PDD,UM0867,Female,UM0867,92.0,Female,11,DLB,U Michigan
+173,234,UM1318,33,22,6,0,6,75.0,9.0,,White,U Michigan,PDD,UM1318,Male,UM1318,75.0,Male,9,DLB,U Michigan
+174,235,UM0453,33,22,6,0,6,82.0,10.0,,White,U Michigan,PDD,UM0453,Male,UM0453,82.0,Male,10,DLB,U Michigan
+175,236,UM0097,34,23,6,0,6,64.0,14.0,,White,U Michigan,PDD,UM0097,Male,UM0097,64.0,Male,14,PD,U Michigan
+176,237,UM0125,34,23,6,0,6,81.0,16.0,,white,U Michigan,PDD,UM0125,Male,UM0125,81.0,Male,16,PD,U Michigan
+177,238,CU_5945,40,27,7,0,7,78.0,25.54,,Black or African-American,Columbia University,DLB,CU_5945,Male,CU_5945,78.0,Male,25.54,DLB,Columbia University
+178,239,SP5568,40,27,7,0,7,65.0,22.4,,Black or African-American,Sepulveda,Control,SP5568,Female,SP5568,65.0,Female,22.4,control,Sepulveda
+179,240,SP5777,40,27,7,0,7,79.0,12.3,,Asian,Sepulveda,Control,SP5777,Female,SP5777,79.0,Female,12.3,control,Sepulveda
+180,241,SP5256,40,27,7,0,7,61.0,10.6,,White,Sepulveda,Control,SP5256,Male,SP5256,61.0,Male,10.6,control,Sepulveda
