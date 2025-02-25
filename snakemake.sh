@@ -14,9 +14,8 @@ module load snakemake/7.7.0
 
 # Decision tree for analysis type
 # 1. Single cell
-# 2. Multiome
+# 2. Multiome -> this pipeline
 # 3. Bulk
-# 4. 
 
 # Results for 2
 # QC metric values
