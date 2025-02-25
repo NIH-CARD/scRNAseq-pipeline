@@ -10,12 +10,10 @@ with the parameters upon which quality control filtering can be done.
 
 # Read the samples table once
 samples = pd.read_csv(snakemake.input.metadata_table)
-print(samples)
-
-print(snakemake.params.sample)
+samples['Sample'] = samples['Sample'].astype(str)
 
 # Extract the metadata for the specific sample in one step
-metadata = samples[samples['Sample'] == snakemake.params.sample].iloc[0]
+metadata = samples[samples['Sample'] == str(snakemake.params.sample)].iloc[0]
 
 """Preprocess the RNA data"""
 
@@ -41,11 +39,10 @@ sc.external.pp.scrublet(adata, expected_doublet_rate=(adata.n_obs / 1000) * 0.00
 adata.obs.drop('predicted_doublet', axis=1, inplace=True)
 adata.obs['cell_barcode'] = adata.obs_names
 
-# Add metadata to the AnnData object directly from the metadata dataframe
-metadata_dict = metadata.to_dict()
+# Add metadata to the AnnData object directly from the metadata datafram
 
-for key, value in metadata_dict.items():
-    adata.obs[key] = value
+for key in metadata.columns.to_list():
+    adata.obs[key] = metadata[key]
 
 # Normalize data
 sc.pp.normalize_total(adata)
