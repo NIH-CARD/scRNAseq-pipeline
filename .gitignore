@@ -51,6 +51,7 @@ slurm-*.out
 # * = ignore all files here (keeps an empty folder instead, which will skip the exclusions)
 input
 envs/*
+.cache
 
 # EXCLUSIONS
 # Anything from the whole folders being ignored that should be included
