@@ -16,13 +16,11 @@ adata = sc.read_h5ad(snakemake.input.rna_anndata)
 cell_type = snakemake.params.cell_type
 disease_name = snakemake.params.disease
 control_name = snakemake.params.control
-
-# Subset the data for the cell type
-adata = adata[adata.obs['cell_type'] == cell_type].copy()
+disease_param = snakemake.params.disease_param,
 
 # Get the list of cells enriched for disease state
-cell_type_control = cell_type_atac.obs['Primary Diagnosis'] == control_name
-cell_type_disease = cell_type_atac.obs['Primary Diagnosis'] == disease_name
+cell_type_control = cell_type_atac.obs[disease_param] == control_name
+cell_type_disease = cell_type_atac.obs[disease_param] == disease_name
 
 # Get pseudo-bulk profile
 pdata = dc.get_pseudobulk(
@@ -49,45 +47,45 @@ sc.tl.pca(pdata)
 dc.swap_layer(pdata, 'counts', X_layer_key=None, inplace=True)
 
 # Abreviate diagnosis
-pdata.obs['diagnosis'] = pdata.obs['Primary Diagnosis']
-
-# Normalize ages
-ages = pdata.obs.age
-pdata.obs['normalage'] = (ages-np.min(ages))/(np.max(ages)-np.min(ages))-.5
+pdata.obs['comparison'] = pdata.obs[disease_param]
 
 dc.get_metadata_associations(
     pdata,
-    obs_keys = ['normalage', 'diagnosis', 'psbulk_n_cells', 'psbulk_counts'],  # Metadata columns to associate to PCs
+    obs_keys = ['comparison', 'psbulk_n_cells', 'psbulk_counts'],  # Metadata columns to associate to PCs
     obsm_key='X_pca',  # Where the PCs are stored
     uns_key='pca_anova',  # Where the results are stored
     inplace=True,
 )
 
+# Export pseudobulk
+pdata.write_h5ad(snakemake.output.celltype_pseudobulk)
+
 pdata_genes = dc.filter_by_expr(
     pdata, 
-    group='diagnosis', 
+    group='comparison', 
     min_count=10, 
     min_total_count=15
     )
 
 pdata = pdata[:, pdata_genes].copy()
 
-inference = DefaultInference(n_cpus=8)
+# Determine the number of cpus to use
+inference = DefaultInference(n_cpus=64)
 
 dds = DeseqDataSet(
     adata=astrocytes,
-    design_factors=['normalage', 'diagnosis', 'batch'],
+    design_factors=['comparison', 'batch'],
     refit_cooks=True,
     inference=inference,
 )
 
-# Compute LFCs
+# Compute log-fold changes
 dds.deseq2()
 
-# Extract contrast between normal and DLB
+# Extract contrast between control and disease states
 stat_res = DeseqStats(
     dds,
-    contrast=["diagnosis", 'DLB', 'control'],
+    contrast=["comparison", disease_name, control_name],
     inference=inference,
 )
 
@@ -101,7 +99,7 @@ DGE_results_df.to_csv(snakemake.output.output_figure)
 
 # Plot 
 dc.plot_volcano_df(
-    astrocyte_DLB_results_df,
+    DGE_results_df,
     x='log2FoldChange',
     y='padj',
     top=20,

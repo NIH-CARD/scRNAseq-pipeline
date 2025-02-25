@@ -14,6 +14,8 @@ input_table = '/data/CARD_singlecell/users/catchingba/multiome-pipeline/input/SN
 # Read in the list of batches and samples
 batches = pd.read_csv(input_table)['Use_batch'].tolist()
 samples = pd.read_csv(input_table)['Sample'].tolist()
+# Name of the disease parameter
+disease_param = 'Primary Diagnosis'
 # Define disease states
 control = 'control'
 diseases = ['PD', 'DLB']
@@ -62,12 +64,10 @@ rule all:
             disease = diseases
             )
         
-
+# This needs to be forced to run once
 rule cellbender:
     script:
         work_dir+'scripts/cellbender_array.sh'
-
-# ADDING GVCF, QTL, work here
 
 rule preprocess:
     input:
@@ -368,7 +368,13 @@ rule DGE:
         rna_anndata = data_dir + 'atlas/05_annotated_anndata_rna.h5ad'
     output:
         output_DGE_data = work_dir + 'data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
-        output_figure = work_dir + 'figures/{cell_type}/rna_{cell_type}_{disease}_DAR.png'
+        output_figure = work_dir + 'figures/{cell_type}/rna_{cell_type}_{disease}_DAR.png',
+        celltype_pseudobulk = work_dir + 'data/celltypes/{cell_type}/rna_{cell_type}_{disease}_pseudobulk.h5ad'
+    params:
+        disease_param = disease_param,
+        control = control,
+        disease = lambda wildcards, output: output[0].split("_")[-2],
+        cell_type = lambda wildcards, output: output[0].split("_")[-3]
     singularity:
         envs['singlecell']
     threads:
@@ -378,7 +384,6 @@ rule DGE:
     script:
         'scripts/rna_DGE.py'
 
-
 rule DAR:
     input:
         atac_anndata = data_dir + 'data/celltypes/{cell_type}/atac.h5ad'
@@ -386,6 +391,7 @@ rule DAR:
         output_DAR_data = work_dir + 'data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
         output_figure = work_dir + 'figures/{cell_type}/atac_{cell_type}_{disease}_DAR.png'
     params:
+        disease_param = disease_param,
         control = control,
         disease = lambda wildcards, output: output[0].split("_")[-2],
         cell_type = lambda wildcards, output: output[0].split("_")[-3]
