@@ -1,5 +1,9 @@
 import pandas as pd
 
+"""========================================================================="""
+"""                                 Parameters                              """
+"""========================================================================="""
+
 # Define the data directory, explicitly
 data_dir = '/data/CARD_singlecell/Brain_atlas/SN_Multiome/'
 # Define the working directory, explictly
@@ -23,12 +27,6 @@ diseases = ['PD', 'DLB']
 # Define the cell types to look for
 cell_types = ['Astro', 'DaN', 'ExN', 'EC', 'InN', 'MG', 'OPC', 'Oligo', 'PC', 'TC']
 
-# Singularity containers to be downloaded from Quay.io
-envs = {
-    'singlecell': 'envs/single_cell_cpu.sif', 
-    'atac': 'envs/snapATAC2.sif'
-    }
-
 # Define RNA thresholds
 mito_percent_thresh = 15
 ribo_percent_thresh = 10
@@ -38,6 +36,12 @@ min_genes_per_cell = 250
 # Define ATAC thresholds
 min_peak_counts = 500
 min_num_cell_by_counts = 10
+
+# Singularity containers to be downloaded from Quay.io, taken care of in bash script
+envs = {
+    'singlecell': 'envs/single_cell_cpu.sif', 
+    'atac': 'envs/snapATAC2.sif'
+    }
 
 rule all:
     input:
@@ -269,7 +273,7 @@ rule SCANVI_annot:
         'scripts/SCANVI_annot.py'
 
 
-rule merge_multiome_atac:
+rule atac_model:
     input:
         cell_annotate = data_dir+'data/rna_cell_annot.csv',
         atac_anndata = expand(
@@ -291,6 +295,8 @@ rule merge_multiome_atac:
     script:
         work_dir+'scripts/merge_atac.py' 
 
+"""
+# THIS IS EXPERIMENTAL AND NOT QUITE WORKING AND HARDCODED TO TEST EXAMPLE
 rule atac_model:
     input:
         atac_anndata = expand(
@@ -310,6 +316,7 @@ rule atac_model:
         runtime=2880, disk_mb=500000, mem_mb=300000, gpu=4
     script:
         'scripts/atac_model.py'
+"""
 
 rule atac_annotate:
     input:

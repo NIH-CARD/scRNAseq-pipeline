@@ -16,10 +16,11 @@ cell_type_atac = sc.read_h5ad(snakemake.input.atac_anndata)
 cell_type = snakemake.params.cell_type
 disease_name = snakemake.params.disease
 control_name = snakemake.params.control
+disease_param = snakemake.params.disease_param
 
 # Get the list of cells enriched for disease state
-cell_type_control = cell_type_atac.obs['Primary Diagnosis'] == control_name
-cell_type_disease = cell_type_atac.obs['Primary Diagnosis'] == disease_name
+cell_type_control = cell_type_atac.obs[disease_param] == control_name
+cell_type_disease = cell_type_atac.obs[disease_param] == disease_name
 
 # Run differential expression test on all of the bins between control and given disease state
 cell_type_diff_bins = snap.tl.diff_test(
