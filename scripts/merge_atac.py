@@ -17,7 +17,7 @@ anndataset = snap.AnnDataSet(
 )
 
 # Update identifiers
-anndataset.obs_names = [bc + '_' + sa for bc, sa in zip(anndataset.obs_names, anndataset.obs['sample'])]
+anndataset.obs_names = [bc + '_' + sa for bc, sa in zip(anndataset.obs_names, anndataset.obs[snakemake.params.sample_key])]
 
 # Add metadata
 metadata_dict = {
@@ -28,11 +28,11 @@ metadata_dict = {
     'ethnicity': 'Ethnicity',
     'race': 'Race',
     'brain_bank': 'Brain_bank',
-    'diagnosis': 'PrimaryDiagnosis'
+    'diagnosis': 'Primary Diagnosis'
 }
 
 for new_obs, metadata_obs in metadata_dict.items():
-    anndataset.obs[new_obs] = [samples.loc[samples['Sample_ID'] == x][metadata_obs].iloc[0] for x in anndataset.obs['sample']]
+    anndataset.obs[new_obs] = [samples.loc[samples[snakemake.params.sample_key] == x][metadata_obs].iloc[0] for x in anndataset.obs['sample']]
 
 # Select variable features
 snap.pp.select_features(adataset, n_features=250000, n_jobs=60)
@@ -41,7 +41,7 @@ snap.pp.select_features(adataset, n_features=250000, n_jobs=60)
 snap.tl.spectral(adataset)
 
 # Batch correction
-snap.pp.mnc_correct(adataset, batch="sample", key_added='X_spectral')
+snap.pp.mnc_correct(adataset, batch=snakemake.params.sample_key, key_added='X_spectral')
 
 # Compute nearest neighbors from the corrected spectral MDS
 snap.pp.knn(adataset)
@@ -58,7 +58,7 @@ pd.DataFrame(adataset.var[['count', 'selected']])to_csv(snakemake.output.var_dat
 
 """ THIS AREA FOR INTEGRATING ANNOTATION WITH RNA DATA"""
 # Save the dataframe
-rna_annot = pd.read_csv('/data/CARD_singlecell/SN_atlas/data/rna_cell_annot.csv')
+rna_annot = pd.read_csv(snakemake.input.cell_annotate)
 anndataset.obs['cell_type'] = rna_annot['cell_type'].to_list()
 
 # Close dataset

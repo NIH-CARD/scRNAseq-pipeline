@@ -18,9 +18,12 @@ metadata_table = work_dir+'/input/example_metadata.csv'
 # Define where celltypes/cell marker gene 
 gene_markers_file = work_dir+'/input/example_marker_genes.csv'
 
+# Key for samples, required in aggregating while preserving sample info
+sample_key = 'Sample'
+
 # Read in the list of batches and samples
 batches = pd.read_csv(metadata_table)['Use_batch'].tolist()
-samples = pd.read_csv(metadata_table)['Sample'].tolist()
+samples = pd.read_csv(metadata_table)[sample_key].tolist()
 
 # Name of the disease parameter
 disease_param = 'Primary Diagnosis'
@@ -241,13 +244,14 @@ rule rna_model:
         merged_rna_anndata = work_dir+'/atlas/04_modeled_anndata_rna.h5ad',
         model_history = work_dir+'/model_elbo/rna_model_history.csv'
     params:
-        model = work_dir+'/data/models/rna/'
+        model = work_dir+'/data/models/rna/',
+        sample_key = sample_key
     singularity:
         envs['singlecell'] # GPU environment needs work: envs['single_cell_gpu']
     threads:
         64
     resources:
-        runtime=2880, disk_mb=500000, mem_mb=300000#, gpu=2, gpu_model='v100x'
+        runtime=2880, disk_mb=500000, mem_mb=300000, gpu=2, gpu_model='v100x'
     script:
         'scripts/rna_model.py'
 
@@ -279,7 +283,8 @@ rule atac_model:
         var_data = work_dir+'/data/atac_var_selected.csv',
         merged_atac_anndata = work_dir+'/atlas/03_filtered_anndata_atac.h5ad'
     params:
-        samples=samples
+        samples = samples,
+        sample_key = sample_key
     singularity:
         envs['atac']
     resources:

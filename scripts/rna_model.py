@@ -24,7 +24,7 @@ sc.pp.highly_variable_genes(
     adata, 
     layer='data',
     n_top_genes=5000, 
-    batch_key="sample")
+    batch_key=snakemake.params.sample_key)
 
 # Define mitochondria and ribosome genes to remove
 adata.var['mt'] = adata.var_names.str.startswith('MT-')
@@ -35,7 +35,7 @@ filtered_adata = adata[:, (adata.var['highly_variable']) & ~(adata.var['mt']) & 
 
 # Setup SCVI on the data layer
 scvi.model.SCVI.setup_anndata(
-    filtered_adata, layer="data", batch_key="sample")
+    filtered_adata, layer="data", batch_key=snakemake.params.sample_key)
 
 # Add the parameters of the model
 model = scvi.model.SCVI(
@@ -49,7 +49,7 @@ model = scvi.model.SCVI(
 # Train the model
 model.train(
     max_epochs=1000,
-    accelerator='gpu',  
+    accelerator='cpu',  
     early_stopping=True,
     early_stopping_patience=20
 )
@@ -66,7 +66,7 @@ adata.obsm['X_scvi'] = model.get_latent_representation()
 # Calculate nearest neighbors and the UMAP from the X_scvi observable matrix
 sc.pp.neighbors(adata, use_rep='X_scvi')
 sc.tl.umap(adata, min_dist=0.3)
-# Calculate the leiden distance from the nearest neighbors
+# Calculate the leiden distance from the nearest neighbors, use a couple resolutions
 sc.tl.leiden(adata, resolution=2, key_added='leiden_2')
 sc.tl.leiden(adata, key_added='leiden')
 sc.tl.leiden(adata, resolution=.5, key_added='leiden_05')
