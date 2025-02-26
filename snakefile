@@ -271,7 +271,7 @@ rule annotate:
 
 rule atac_model:
     input:
-        cell_annotate = work_dir+'data/rna_cell_annot.csv',
+        cell_annotate = work_dir+'/data/rna_cell_annot.csv',
         metadata_table=metadata_table,
         atac_anndata = expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
