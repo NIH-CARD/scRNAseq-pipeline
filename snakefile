@@ -249,9 +249,9 @@ rule rna_model:
     singularity:
         envs['singlecell'] # GPU environment needs work: envs['single_cell_gpu']
     threads:
-        64
+        32
     resources:
-        runtime=2880, mem_mb=300000#, gpu=2, gpu_model='v100x'
+        runtime=240, mem_mb=100000#, gpu=2, gpu_model='v100x'
     script:
         'scripts/rna_model.py'
 
