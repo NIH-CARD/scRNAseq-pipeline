@@ -12,6 +12,8 @@ from pydeseq2.ds import DeseqStats
 # Open rna
 adata = sc.read_h5ad(snakemake.input.rna_anndata)
 
+adata = adata[adata.obs['cell_type'] == snakemake.params.cell_type].copy()
+
 # Read in parameters
 disease_name = snakemake.params.disease
 control_name = snakemake.params.control
