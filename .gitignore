@@ -7,6 +7,7 @@ data/*.csv
 data/*.gtf
 data/*.xlsx
 data/old_data/*
+atlas/*
 
 # Don't save the .snakemake logs
 .snakemake

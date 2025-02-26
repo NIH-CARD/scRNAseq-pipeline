@@ -7,6 +7,11 @@ import scanpy as sc
 samples = snakemake.params.samples
 atac_anndata = snakemake.input.atac_anndata
 
+# Import metadata
+metadata = pd.read_csv(snakemake.input.metadata_table)
+# Reset the index for the samples
+metadata = metadata_table.set_index(snakefile.params.sample_key)
+
 # Read in snapATAC2 datasets into a list of anndata objects in read only
 list_of_anndata = [(samples[i], snap.read(atac_anndata[i])) for i in range(len(atac_anndata))]
 
@@ -19,20 +24,11 @@ anndataset = snap.AnnDataSet(
 # Update identifiers
 anndataset.obs_names = [bc + '_' + sa for bc, sa in zip(anndataset.obs_names, anndataset.obs[snakemake.params.sample_key])]
 
-# Add metadata
-metadata_dict = {
-    'batch' : 'Use_batch',
-    'sex': 'Sex',
-    'age': 'Age',
-    'pmi': 'PMI',
-    'ethnicity': 'Ethnicity',
-    'race': 'Race',
-    'brain_bank': 'Brain_bank',
-    'diagnosis': 'Primary Diagnosis'
-}
-
-for new_obs, metadata_obs in metadata_dict.items():
-    anndataset.obs[new_obs] = [samples.loc[samples[snakemake.params.sample_key] == x][metadata_obs].iloc[0] for x in anndataset.obs['sample']]
+for value in metadata_table.columns.to_list():
+    # Create a new dictionary for each sample-metadata value
+    sample2value = metadata_table[value].to_dict()
+    # Assign this value
+    anndataset.obs[new_obs] = [sample2value[x] for x in anndataset.obs[snakefile.params.sample_key].to_list()]
 
 # Select variable features
 snap.pp.select_features(adataset, n_features=250000, n_jobs=60)

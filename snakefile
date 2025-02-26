@@ -251,7 +251,7 @@ rule rna_model:
     threads:
         64
     resources:
-        runtime=2880, disk_mb=500000, mem_mb=300000, gpu=2, gpu_model='v100x'
+        runtime=2880, mem_mb=300000#, gpu=2, gpu_model='v100x'
     script:
         'scripts/rna_model.py'
 
@@ -271,7 +271,8 @@ rule annotate:
 
 rule atac_model:
     input:
-        cell_annotate = data_dir+'data/rna_cell_annot.csv',
+        cell_annotate = work_dir+'data/rna_cell_annot.csv',
+        metadata_table=metadata_table,
         atac_anndata = expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
             zip,
