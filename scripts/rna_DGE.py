@@ -13,14 +13,9 @@ from pydeseq2.ds import DeseqStats
 adata = sc.read_h5ad(snakemake.input.rna_anndata)
 
 # Read in parameters
-cell_type = snakemake.params.cell_type
 disease_name = snakemake.params.disease
 control_name = snakemake.params.control
-disease_param = snakemake.params.disease_param,
-
-# Get the list of cells enriched for disease state
-cell_type_control = cell_type_atac.obs[disease_param] == control_name
-cell_type_disease = cell_type_atac.obs[disease_param] == disease_name
+disease_param = snakemake.params.disease_param
 
 # Get pseudo-bulk profile
 pdata = dc.get_pseudobulk(
