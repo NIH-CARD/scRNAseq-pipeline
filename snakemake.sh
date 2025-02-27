@@ -36,11 +36,8 @@ module load singularity/4.1.5
 # Bind external directories on Biowulf
 . /usr/local/current/singularity/app_conf/sing_binds
 
-# In the future the snakefile will be changed depending on workflow
-snakefile_name="snakefile_multiome"
-
 # RUN SCRIPT
-snakemake --cores all --profile snakemake_profile --use-singularity --use_snakefile $snakefile_name
+snakemake --cores all --profile snakemake_profile --use-singularity --use_snakefile snakefile_multiome
 
 #! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
 # - uncomment the --unlock flag above
