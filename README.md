@@ -12,7 +12,7 @@ The modules of Scanpy (https://github.com/scverse/scanpy), SCVI (https://github.
 
 ### To get started
 
-Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in the 
+Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in a separate folder to be defined by the user.
 
 #### Required inputs:
 - Metadata file in .csv format, example in `input/example_metadata.csv`. A minimal metadata file should include:
