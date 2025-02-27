@@ -37,7 +37,7 @@ module load singularity/4.1.5
 . /usr/local/current/singularity/app_conf/sing_binds
 
 # In the future the snakefile will be changed depending on workflow
-snakefile_name="snakefile"
+snakefile_name="snakefile_multiome"
 
 # RUN SCRIPT
 snakemake --cores all --profile snakemake_profile --use-singularity --use_snakefile $snakefile_name
