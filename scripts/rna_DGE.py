@@ -69,7 +69,7 @@ pdata = pdata[:, pdata_genes].copy()
 inference = DefaultInference(n_cpus=64)
 
 dds = DeseqDataSet(
-    adata=astrocytes,
+    adata=pdata,
     design_factors=[disease_param, 'batch'],
     refit_cooks=True,
     inference=inference,
