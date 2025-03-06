@@ -1,0 +1,64 @@
+Bootstrap: docker
+From: condaforge/miniforge3
+
+%environment
+    export LC_ALL=en_US.utf-8
+    export LANG=en_US.utf-8
+    export LANGUAGE=en_US.UTF-8
+    # Set BASH_ENV which points to init file loaded during non-interactive shell
+    export BASH_ENV=/opt/etc/bashrc
+    # Force loading of copied bashrc for interactive shell
+    source /opt/etc/bashrc
+
+
+%files
+    single_cell_gpu.yml
+
+%post
+    # Ensure locales packages installed
+    apt-get -y update
+    apt-get install -y locales locales-all
+    apt-get -y install g++
+
+    # Create target dir for non-root-accessible bashrc
+    mkdir -p /opt/etc
+
+    # Define environment name. Doesn't really matter as it's auto-loaded regardless
+    ENVNAME='single_cell_gpu'
+
+    # Create environment using mamba
+    conda env create -f single_cell_gpu.yml -p /opt/etc/$ENV_NAME
+    
+    # Finalize bashrc file
+    echo "#! /bin/bash\n\nconda activate single_cell_gpu" > ~/.bashrc 
+    mamba init bash
+    echo "echo \"Activating ${ENVNAME}\"" >>  ~/.bashrc
+    # Install pip-dependent packages separately
+    pip install --use-pep517 absl-py aiohttp aiosignal anndata annoy \
+    async-timeout attrs bbknn chex click cloudpickle \
+    contextlib2 cython docrep etils executing flax \
+    frozenlist fsspec future grpcio hyperopt igraph \
+    jax jax-cuda12-pjrt jax-cuda12-plugin jaxlib jsonschema \
+    jsonschema-specifications leidenalg lightning lightning-utilities \
+    markdown markdown-it-py mdurl ml-collections msgpack \
+    mudata multidict multipledispatch numpyro nvidia-cublas-cu12 \
+    nvidia-cuda-cupti-cu12 nvidia-cuda-nvcc-cu12 nvidia-cuda-runtime-cu12 \
+    nvidia-cudnn-cu12 nvidia-cufft-cu12 nvidia-cusolver-cu12 \
+    nvidia-cusparse-cu12 nvidia-nccl-cu12 nvidia-nvjitlink-cu12 \
+    optax orbax-checkpoint plottable prompt-toolkit protobuf \
+    pure-eval py4j pyarrow pyro-api pyro-ppl \
+    pytorch-lightning ray referencing rich rpds-py \
+    scib-metrics scvi-tools==1.1.2 setuptools stack-data tensorboard \
+    tensorboard-data-server tensorboardx tensorstore texttable \
+    toolz torchmetrics werkzeug yarl
+
+    echo "\nmamba activate ${ENVNAME}" >> ~/.bashrc
+
+    # Clean up installer files
+    conda clean -a
+
+    # Copy bashrc to non-root-accessible location
+    cp ~/.bashrc /opt/etc/bashrc
+
+# %runscript
+    exec /bin/bash "$@"

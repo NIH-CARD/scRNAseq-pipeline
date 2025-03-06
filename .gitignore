@@ -50,12 +50,8 @@ slurm-*.out
 
 # WHOLE FOLDERS TO IGNORE
 # * = ignore all files here (keeps an empty folder instead, which will skip the exclusions)
-envs/*
 .cache
 
 # EXCLUSIONS
 # Anything from the whole folders being ignored that should be included
-!envs/cellbender.yml
-!envs/single_cell_cpu.yml
-!envs/single_cell_gpu.yml
-!envs/snapATAC2.yml
+
