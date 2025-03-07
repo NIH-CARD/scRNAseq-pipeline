@@ -29,6 +29,7 @@ git clone https://github.com/NIH-HPC/snakemake_profile.git
 # Pull the containers
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu
+apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu
 
 # Load singularity
 module load singularity/4.1.5
@@ -37,7 +38,7 @@ module load singularity/4.1.5
 . /usr/local/current/singularity/app_conf/sing_binds
 
 # RUN SCRIPT
-snakemake --cores all --profile snakemake_profile --use-singularity --use_snakefile snakefile_multiome
+snakemake --cores all --profile snakemake_profile --use-singularity 
 
 #! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
 # - uncomment the --unlock flag above

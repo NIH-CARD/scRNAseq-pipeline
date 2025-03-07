@@ -51,7 +51,8 @@ min_num_cell_by_counts = 10
 # Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
-    'atac': 'envs/snapATAC2.sif'
+    'atac': 'envs/snapATAC2.sif',
+    'single_cell_gpu': 'envs/single_cell_gpu.sif'
     }
 
 rule all:
@@ -247,11 +248,11 @@ rule rna_model:
         model = work_dir+'/data/models/rna/',
         sample_key = sample_key
     singularity:
-        envs['singlecell'] # GPU environment needs work: envs['single_cell_gpu']
+        envs['single_cell_gpu']
     threads:
         32
     resources:
-        runtime=240, mem_mb=100000#, gpu=2, gpu_model='v100x'
+        runtime=240, mem_mb=200000, gpu=2, gpu_model='v100x'
     script:
         'scripts/rna_model.py'
 
