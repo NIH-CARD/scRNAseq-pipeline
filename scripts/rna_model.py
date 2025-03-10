@@ -5,6 +5,8 @@ import pandas as pd
 import scipy
 import numpy as np
 
+print(torch.cuda.is_available())
+
 scvi.settings.seed = 0
 torch.set_float32_matmul_precision('high')
 
