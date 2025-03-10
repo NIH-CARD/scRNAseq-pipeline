@@ -4,12 +4,13 @@
 #SBATCH --mem-per-cpu=32G
 #SBATCH --time 24:00:00
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:v100x:1
+#SBATCH --gres=gpu:v100x:2
 #SBATCH --array=0-6
 
 module purge
 module load apptainer
 module load snakemake/7.7.0
+module load cuda/
 
 
 # Decision tree for analysis type
@@ -28,7 +29,7 @@ git clone https://github.com/NIH-HPC/snakemake_profile.git
 
 # Pull the containers
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
-apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu
+apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:02
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu
 
 # Load singularity
