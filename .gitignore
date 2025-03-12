@@ -27,6 +27,7 @@ plots
 
 # Ignore the actual files inside input
 input/old_files
+input/*.csv
 #? Q) Keep input folder? Ignore all files inside it?
 
 # No need to show my mistakes (logs) to the world
