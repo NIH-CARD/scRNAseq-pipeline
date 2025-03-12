@@ -10,7 +10,6 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     # Force loading of copied bashrc for interactive shell
     source /opt/etc/bashrc
 
-
 %files
     single_cell_gpu.yml
 
@@ -25,14 +24,6 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     apt-get -y install g++
     apt-get install -y wget
 
-    # Install Anaconda
-    wget -c https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
-    bash Anaconda3-2020.02-Linux-x86_64.sh -bfp /opt/conda
-    export PATH=/opt/conda/bin:$PATH
-    conda init
-    conda install -c conda-forge anaconda
-    
-
     # download and run NIH HPC NVIDIA driver installer
     wget https://raw.githubusercontent.com/NIH-HPC/gpu4singularity/master/gpu4singularity
     chmod u+rwx gpu4singularity
@@ -42,6 +33,13 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
         -V "${VERSION}"
     rm gpu4singularity
 
+    # Install Anaconda
+    wget -c https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
+    bash Anaconda3-2020.02-Linux-x86_64.sh -bfp /opt/conda
+    export PATH=/opt/conda/bin:$PATH
+    conda install -c conda-forge anaconda==22.9.0
+    conda update -c conda-forge
+
     # Create target dir for non-root-accessible bashrc
     mkdir -p /opt/etc
 
@@ -49,14 +47,15 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     ENVNAME='single_cell_gpu'
 
     # Create environment using conda
-    conda env create -n $ENVNAME -p /opt/etc/$ENV_NAME
+    conda init bash
+    conda create -f single_cell_gpu.yml -p /opt/etc/$ENV_NAME
+    #conda activate $ENVNAME
     conda install conda-forge::jax 
     conda install -c pytorch magma-cuda121 
     conda install scvi-tools -c conda-forge
     
     # Finalize bashrc file
     echo "#! /bin/bash\n\nconda activate single_cell_gpu" > ~/.bashrc 
-    conda init bash
     echo "echo \"Activating ${ENVNAME}\"" >>  ~/.bashrc
     echo "\nconda activate ${ENVNAME}" >> ~/.bashrc
 
