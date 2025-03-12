@@ -29,8 +29,9 @@ git clone https://github.com/NIH-HPC/snakemake_profile.git
 
 # Pull the containers
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
-apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:02
+apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:0.2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu
+apptainer pull envs/scenicplus.sif oras://hub.docker.com/litd/docker-scenicplus:latest
 
 # Load singularity
 module load singularity/4.1.5

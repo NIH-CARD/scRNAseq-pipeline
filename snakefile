@@ -53,6 +53,7 @@ envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
     'atac': 'envs/snapATAC2.sif',
     'single_cell_gpu': 'envs/single_cell_gpu.sif'
+    'scenicplus': 'envs/scenicplus.sif'
     }
 
 rule all:
@@ -411,3 +412,85 @@ rule DAR:
         runtime=1440, disk_mb=200000, mem_mb=200000
     script:
         'scripts/atac_DAR.py'
+
+rule cistopic_pseudobulk:
+    input:
+        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        fragment_file=expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
+            zip,
+            sample=samples,
+            batch=batches
+            ),
+        samples=samples
+    output:
+        bigwig_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
+        bed_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bed_paths.tsv'
+    params:
+        bigwig_file_locs = work_dir + 'data/pycisTopic/pseudobulk_cell_bigwig_files/',
+        bed_file_locs = work_dir + 'data/pycisTopic/pseudobulk_cell_bed_files/',
+        pseudobulk_param = 'cell_type'
+    conda:
+        envs['scenicplus']
+    threads:
+        64
+    resources:
+        runtime=240, mem_mb=3000000, slurm_partition='largemem'
+    script:
+        'scripts/cistopic_pseudobulk.py'
+
+rule cistopic_call_peaks:
+    input:
+        bigwig_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
+        bed_paths = work_dir + 'data/pycisTopic/pseudobulk_bed_files/bed_paths.tsv'
+    output:
+        consensus_bed = work_dir + 'data/pycisTopic/consensus_regions.bed',
+        peak_dict = work_dir + 'data/pycisTopic/MACS/narrow_peaks_dict.pkl'
+    params:
+        MACS_dir = work_dir + 'data/pycisTopic/MACS'
+    conda:
+        envs['scenicplus']
+    resources:
+        runtime=240, mem_mb=100000
+    script:
+        'scripts/cistopic_call_peaks.py'
+    
+rule cistopic_create_objects:
+    input:
+        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        fragment_file = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
+        consenus_bed = work_dir + 'data/pycisTopic/consensus_regions.bed'
+    output:
+        cistopic_object = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_cistopic_obj.pkl',
+        cistopic_adata = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_anndata_peaks_atac.h5ad'
+    singularity:
+        envs['scenicplus']
+    params:
+        sample='{sample}'
+    script:
+        'scripts/cistopic_create_object.py'
+
+rule cistopic_merge_objects:
+    input:
+        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        cistopic_objects = expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_cistopic_obj.pkl',
+            zip,
+            sample=samples,
+            batch=batches
+            ),
+        rna_anndata=expand(
+            data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_anndata_peaks_atac.h5ad', 
+            zip,
+            sample=samples,
+            batch=batches
+            )
+    output:
+        merged_cistopic_object = work_dir + 'data/pycisTopic/merged_cistopic_object.pkl',
+        merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
+    conda:
+        envs['scenicplus']
+    resources:
+        runtime=1440, mem_mb=2000000, slurm_partition='largemem'
+    script:
+        'scripts/merge_cistopic_and_adata.py'
