@@ -80,7 +80,9 @@ rule all:
             work_dir + '/data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
             cell_type = cell_types,
             disease = diseases
-            )
+            ),
+        merged_cistopic_object = work_dir + 'data/pycisTopic/merged_cistopic_object.pkl',
+        merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
         
 # This needs to be forced to run once
 rule cellbender:
