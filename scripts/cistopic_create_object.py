@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import anndata as ad
+import scanpy as sc
 from pycisTopic.cistopic_class import *
 import scanpy as sc
 import pickle 
