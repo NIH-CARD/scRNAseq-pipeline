@@ -437,7 +437,7 @@ rule cistopic_pseudobulk:
     threads:
         64
     resources:
-        runtime=240, mem_mb=3000000, slurm_partition='largemem'
+        runtime=240, mem_mb=3000000, disk_mb=500000, slurm_partition='largemem'
     script:
         'scripts/cistopic_pseudobulk.py'
 
@@ -450,10 +450,10 @@ rule cistopic_call_peaks:
         peak_dict = work_dir + '/data/pycisTopic/MACS/narrow_peaks_dict.pkl'
     params:
         MACS_dir = work_dir + '/data/pycisTopic/MACS'
-    conda:
+    singularity:
         envs['scenicplus']
     resources:
-        runtime=240, mem_mb=100000
+        runtime=240, mem_mb=100000, disk_mb=500000
     script:
         'scripts/cistopic_call_peaks.py'
     
