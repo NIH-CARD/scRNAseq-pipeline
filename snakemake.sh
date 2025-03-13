@@ -12,18 +12,6 @@ module load apptainer
 module load snakemake/7.7.0
 module load cuda/
 
-
-# Decision tree for analysis type
-# 1. Single cell
-# 2. Multiome -> this pipeline
-# 3. Bulk
-
-# Results for 2
-# QC metric values
-# Data directory
-# Results directory
-# Location
-
 # Pull profile, this will only run once, and is required for running on Biowulf
 git clone https://github.com/NIH-HPC/snakemake_profile.git
 
@@ -31,7 +19,7 @@ git clone https://github.com/NIH-HPC/snakemake_profile.git
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:0.2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu
-apptainer pull envs/scenicplus.sif oras://hub.docker.com/litd/docker-scenicplus:latest
+apptainer pull envs/scenicplus.sif docker://litd/docker-scenicplus:latest
 
 # Load singularity
 module load singularity/4.1.5

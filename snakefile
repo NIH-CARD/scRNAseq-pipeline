@@ -52,7 +52,7 @@ min_num_cell_by_counts = 10
 envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
     'atac': 'envs/snapATAC2.sif',
-    'single_cell_gpu': 'envs/single_cell_gpu.sif'
+    'single_cell_gpu': 'envs/single_cell_gpu.sif',
     'scenicplus': 'envs/scenicplus.sif'
     }
 
@@ -81,7 +81,7 @@ rule all:
             cell_type = cell_types,
             disease = diseases
             ),
-        merged_cistopic_object = work_dir + 'data/pycisTopic/merged_cistopic_object.pkl',
+        merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
         merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
         
 # This needs to be forced to run once
@@ -423,16 +423,16 @@ rule cistopic_pseudobulk:
             zip,
             sample=samples,
             batch=batches
-            ),
-        samples=samples
+            )
     output:
-        bigwig_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
-        bed_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bed_paths.tsv'
+        bigwig_paths = work_dir + '/data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
+        bed_paths = work_dir + '/data/pycisTopic/pseudobulk_bed_files/bed_paths.tsv'
     params:
-        bigwig_file_locs = work_dir + 'data/pycisTopic/pseudobulk_cell_bigwig_files/',
-        bed_file_locs = work_dir + 'data/pycisTopic/pseudobulk_cell_bed_files/',
-        pseudobulk_param = 'cell_type'
-    conda:
+        bigwig_file_locs = work_dir + '/data/pycisTopic/pseudobulk_cell_bigwig_files/',
+        bed_file_locs = work_dir + '/data/pycisTopic/pseudobulk_cell_bed_files/',
+        pseudobulk_param = 'cell_type',
+        samples=samples
+    singularity:
         envs['scenicplus']
     threads:
         64
@@ -443,13 +443,13 @@ rule cistopic_pseudobulk:
 
 rule cistopic_call_peaks:
     input:
-        bigwig_paths = work_dir + 'data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
-        bed_paths = work_dir + 'data/pycisTopic/pseudobulk_bed_files/bed_paths.tsv'
+        bigwig_paths = work_dir + '/data/pycisTopic/pseudobulk_bigwig_files/bw_paths.tsv',
+        bed_paths = work_dir + '/data/pycisTopic/pseudobulk_bed_files/bed_paths.tsv'
     output:
-        consensus_bed = work_dir + 'data/pycisTopic/consensus_regions.bed',
-        peak_dict = work_dir + 'data/pycisTopic/MACS/narrow_peaks_dict.pkl'
+        consensus_bed = work_dir + '/data/pycisTopic/consensus_regions.bed',
+        peak_dict = work_dir + '/data/pycisTopic/MACS/narrow_peaks_dict.pkl'
     params:
-        MACS_dir = work_dir + 'data/pycisTopic/MACS'
+        MACS_dir = work_dir + '/data/pycisTopic/MACS'
     conda:
         envs['scenicplus']
     resources:
@@ -461,7 +461,7 @@ rule cistopic_create_objects:
     input:
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
         fragment_file = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
-        consenus_bed = work_dir + 'data/pycisTopic/consensus_regions.bed'
+        consenus_bed = work_dir + '/data/pycisTopic/consensus_regions.bed'
     output:
         cistopic_object = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_cistopic_obj.pkl',
         cistopic_adata = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_anndata_peaks_atac.h5ad'
@@ -488,9 +488,9 @@ rule cistopic_merge_objects:
             batch=batches
             )
     output:
-        merged_cistopic_object = work_dir + 'data/pycisTopic/merged_cistopic_object.pkl',
+        merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
         merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
-    conda:
+    singularity:
         envs['scenicplus']
     resources:
         runtime=1440, mem_mb=2000000, slurm_partition='largemem'
