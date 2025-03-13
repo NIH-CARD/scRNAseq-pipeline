@@ -14,7 +14,7 @@ work_dir = os.getcwd()
 num_workers = 8
 
 # Define where the metadata data exists for each sample to be processed
-metadata_table = work_dir+'/input/example_metadata.csv'
+metadata_table = work_dir+'/input/SN_PD_DLB_samples.csv'
 # Define where celltypes/cell marker gene 
 gene_markers_file = work_dir+'/input/example_marker_genes.csv'
 

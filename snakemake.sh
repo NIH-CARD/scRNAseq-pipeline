@@ -29,10 +29,3 @@ module load singularity/4.1.5
 
 # RUN SCRIPT
 snakemake --cores all --profile snakemake_profile --use-singularity 
-
-#! WARNING - if the slurm-*.txt files say that there is a locked file error, then:
-# - uncomment the --unlock flag above
-# - run this script once
-# - it will just unlock the files
-# - comment it back out 
-# - and run the script again   
