@@ -82,7 +82,7 @@ rule all:
             disease = diseases
             ),
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
-        merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad'
         
 # This needs to be forced to run once
 rule cellbender:
@@ -493,7 +493,7 @@ rule cistopic_merge_objects:
             )
     output:
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
-        merged_cistopic_adata = data_dir + 'atlas/05_annotated_cistopic_atac.h5ad'
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad'
     singularity:
         envs['scenicplus']
     resources:

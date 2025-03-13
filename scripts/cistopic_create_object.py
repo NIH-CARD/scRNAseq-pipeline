@@ -32,12 +32,6 @@ cistopic_obj = create_cistopic_object_from_fragments(path_to_fragments=snakemake
                                                n_cpu=32,
                                                project=snakemake.params.sample)
 
-# Export sample
-pickle.dump(
-    cistopic_obj,
-    open(snakemake.output.cistopic_object, "wb")
-)
-
 # Assign metadata
 cistopic_obj.cell_data['atlas_identifier'] = [cistopic_obj.cell_data['barcode'][i] + '_' + cistopic_obj.cell_data['sample_id'][i] for i in range(len(cistopic_obj.cell_data))]
 
@@ -46,6 +40,12 @@ barcode2disease = cell_data['Primary Diagnosis'].to_dict()
 
 cistopic_obj.cell_data['cell_type'] = [barcode2celltype[x] for x in cistopic_obj.cell_data['atlas_identifier']]
 cistopic_obj.cell_data['Primary Diagnosis'] = [barcode2disease[x] for x in cistopic_obj.cell_data['atlas_identifier']]
+
+# Export sample
+pickle.dump(
+    cistopic_obj,
+    open(snakemake.output.cistopic_object, "wb")
+)
 
 # Create AnnData object
 adata = ad.AnnData(cistopic_obj.fragment_matrix.T)
