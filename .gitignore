@@ -48,7 +48,9 @@ logs
 slurm-*.out
 
 # Singularity Image Files
-*.sif 
+envs
+!envs/*.def
+!envs/*.yml
 
 # WHOLE FOLDERS TO IGNORE
 # * = ignore all files here (keeps an empty folder instead, which will skip the exclusions)

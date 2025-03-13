@@ -58,7 +58,7 @@ envs = {
 
 rule all:
     input:
-        rna_anndata=expand(
+        """rna_anndata=expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
             zip,
             batch=batches,
@@ -69,7 +69,7 @@ rule all:
             zip,
             sample=samples,
             batch=batches
-            ),
+            ),"""
         merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu',
         output_DGE_data = expand(
             work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
