@@ -42,7 +42,7 @@ bw_paths, bed_paths = export_pseudobulk(
     bed_path = snakemake.params.bed_file_locs,
     bigwig_path = snakemake.params.bigwig_file_locs,
     path_to_fragments = fragments_dict,
-    n_cpu = 32,
+    n_cpu = snakemake.threads,
     normalize_bigwig = True,
     temp_dir = snakemake.resources.tmpdir
     )
