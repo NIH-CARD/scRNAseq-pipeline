@@ -1,4 +1,4 @@
-# scMAVERICKS
+# scMAVERICS
 
 ## single-cell Multiome Analysis using Variational-inference and Enhancer-driven Regulatory-networks to Inform Cell-atlas Structure
 
