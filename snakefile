@@ -461,7 +461,7 @@ rule cistopic_create_objects:
     input:
         merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
         fragment_file = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
-        consenus_bed = work_dir + '/data/pycisTopic/consensus_regions.bed'
+        consensus_bed = work_dir + '/data/pycisTopic/consensus_regions.bed'
     output:
         cistopic_object = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_cistopic_obj.pkl',
         cistopic_adata = data_dir + 'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_anndata_peaks_atac.h5ad'
@@ -469,6 +469,10 @@ rule cistopic_create_objects:
         envs['scenicplus']
     params:
         sample='{sample}'
+    resources:
+        runtime=240, mem_mb=100000
+    threads:
+        16
     script:
         'scripts/cistopic_create_object.py'
 
