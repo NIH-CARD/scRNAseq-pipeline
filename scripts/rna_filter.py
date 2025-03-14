@@ -9,8 +9,6 @@ adata = sc.read_h5ad(snakemake.input.rna_anndata) # type: ignore
 
 # Threshold below a given mitochondria percent
 adata = adata[adata.obs['pct_counts_mt'] < snakemake.params.mito_percent_thresh].copy()
-# Threshold below a given doublet score
-adata = adata[adata.obs['doublet_score'] < snakemake.params.doublet_thresh].copy()
 # Threshold above a given genes per cell threshold
 adata = adata[adata.obs['n_genes_by_counts'] > snakemake.params.min_genes_per_cell].copy()
 # Threshold below a given ribosome threshold
@@ -27,7 +25,7 @@ if adata.n_obs != 0:
     sc.pp.log1p(adata, layer='cpm')
 
     # Save the normalized-log data
-    adata.layers['data']=adata.X.copy() 
+    adata.layers['log-norm']=adata.X.copy() 
 
 # Write out filtered anndata object
 adata.write(filename=snakemake.output.rna_anndata, compression='gzip') # type: ignore

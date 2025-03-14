@@ -35,9 +35,10 @@ adata.var['rb'] = adata.var_names.str.startswith(('RPL', 'RPS'))
 sc.pp.calculate_qc_metrics(adata, qc_vars=['rb', 'mt'], percent_top=None, log1p=False, inplace=True)
 
 # Run scrublet to identify doublets
-sc.external.pp.scrublet(adata, expected_doublet_rate=(adata.n_obs / 1000) * 0.008)
+"""THIS IS NOW CALCULATED AFTER MERGING"""
+"""sc.external.pp.scrublet(adata, expected_doublet_rate=(adata.n_obs / 1000) * 0.008)
 adata.obs.drop('predicted_doublet', axis=1, inplace=True)
-adata.obs['cell_barcode'] = adata.obs_names
+adata.obs['cell_barcode'] = adata.obs_names"""
 
 # Add metadata to the AnnData object directly from the metadata dataframe
 for key in metadata.to_dict():
@@ -53,7 +54,7 @@ adata.layers['cpm']=adata.X.copy()
 sc.pp.log1p(adata)
 
 # Save the normalized-log data
-adata.layers['data']=adata.X.copy() 
+adata.layers['log-norm']=adata.X.copy() 
 
 # Calculate cell cycle()
 cell_cycle_genes = [x.strip() for x in open('/data/CARD_singlecell/SN_atlas/input/lab_cell_cycle_genes.txt')]

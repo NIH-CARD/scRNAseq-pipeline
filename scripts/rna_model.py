@@ -13,11 +13,6 @@ torch.set_float32_matmul_precision('high')
 # Read in AnnData atlas object
 adata = sc.read_h5ad(snakemake.input.merged_rna_anndata)
 
-# Produce a sparce counts layer
-adata.layers['counts'] = scipy.sparse.csr_matrix(adata.layers['counts'].copy())
-adata.layers['cpm'] = scipy.sparse.csr_matrix(adata.layers['cpm'].copy())
-adata.layers['data'] = scipy.sparse.csr_matrix(adata.layers['data'].copy())
-
 # Double check that no transcripts not found in cells are in the atlas
 sc.pp.filter_genes(adata, min_cells=1)
 

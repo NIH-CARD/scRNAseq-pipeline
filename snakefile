@@ -58,18 +58,6 @@ envs = {
 
 rule all:
     input:
-        """rna_anndata=expand(
-            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
-            zip,
-            batch=batches,
-            sample=samples
-            ),
-        atac_anndata = expand(
-            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
-            zip,
-            sample=samples,
-            batch=batches
-            ),"""
         merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu',
         output_DGE_data = expand(
             work_dir + '/data/significant_genes/rna/rna_{cell_type}_{disease}_DGE.csv',
@@ -83,13 +71,25 @@ rule all:
             ),
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
         merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad'
+"""rna_anndata=expand(
+    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
+    zip,
+    batch=batches,
+    sample=samples
+    ),
+atac_anndata = expand(
+    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
+    zip,
+    sample=samples,
+    batch=batches
+    ),"""
         
 # This needs to be forced to run once
 rule cellbender:
     script:
         work_dir+'/scripts/cellbender_array.sh'
 
-rule preprocess:
+rule rna_preprocess:
     input:
         metadata_table=metadata_table,
         rna_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/cellbender_gex_counts_filtered.h5'
@@ -102,7 +102,7 @@ rule preprocess:
     resources:
         runtime=120, mem_mb=64000, disk_mb=10000, slurm_partition='quick' 
     script:
-        work_dir+'/scripts/preprocess.py'
+        work_dir+'/scripts/rna_preprocess.py'
 
 rule merge_unfiltered:
     input:
@@ -417,7 +417,7 @@ rule DAR:
 
 rule cistopic_pseudobulk:
     input:
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad',
         fragment_file=expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
             zip,
@@ -431,7 +431,8 @@ rule cistopic_pseudobulk:
         bigwig_file_locs = work_dir + '/data/pycisTopic/pseudobulk_cell_bigwig_files/',
         bed_file_locs = work_dir + '/data/pycisTopic/pseudobulk_cell_bed_files/',
         pseudobulk_param = 'cell_type',
-        samples=samples
+        samples=samples,
+        sample_param_name = sample_key
     singularity:
         envs['scenicplus']
     threads:
@@ -459,7 +460,7 @@ rule cistopic_call_peaks:
     
 rule cistopic_create_objects:
     input:
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad',
         fragment_file = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/atac_fragments.tsv.gz',
         consensus_bed = work_dir + '/data/pycisTopic/consensus_regions.bed'
     output:
@@ -470,7 +471,7 @@ rule cistopic_create_objects:
     params:
         sample='{sample}'
     resources:
-        runtime=240, mem_mb=100000
+        runtime=240, mem_mb=200000
     threads:
         16
     script:
@@ -478,7 +479,7 @@ rule cistopic_create_objects:
 
 rule cistopic_merge_objects:
     input:
-        merged_rna_anndata = data_dir+'atlas/05_annotated_anndata_rna.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad',
         cistopic_objects = expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/04_{sample}_cistopic_obj.pkl',
             zip,

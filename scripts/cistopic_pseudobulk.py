@@ -11,7 +11,7 @@ rna = sc.read_h5ad(snakemake.input.merged_rna_anndata)
 cell_data = rna.obs
 # Add the sample_id and barcode variables to match required cisTopic input
 cell_data['barcode'] = [x.split('_')[0] for x in cell_data.index]
-cell_data['sample_id'] = cell_data['sample']
+cell_data['sample_id'] = cell_data[snakemake.params.sample_param_name]
 
 # Make sure list of samples is interpreted as strings
 samples = [str(x) for x in snakemake.params.samples]
