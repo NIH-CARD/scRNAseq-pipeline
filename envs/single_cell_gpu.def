@@ -7,15 +7,14 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     export LANGUAGE=en_US.UTF-8
     # Set BASH_ENV which points to init file loaded during non-interactive shell
     export BASH_ENV=/opt/etc/bashrc
+    export PATH="/opt/mamba/bin:$PATH"
     # Force loading of copied bashrc for interactive shell
     source /opt/etc/bashrc
-
-%files
-    single_cell_gpu.yml
 
 %post
     # Create target dir for non-root-accessible bashrc
     mkdir -p /opt/etc
+    mkdir -p /opt/conda
 
     # Ensure locales packages installed
     sed -i '/xenial.*universe/s/^#//g' /etc/apt/sources.list
@@ -28,36 +27,30 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     wget https://raw.githubusercontent.com/NIH-HPC/gpu4singularity/master/gpu4singularity
     chmod u+rwx gpu4singularity
     export VERSION=375.66
-    ./gpu4singularity --verbose \
-        -u http://us.download.nvidia.com/XFree86/Linux-x86_64/"${VERSION}"/NVIDIA-Linux-x86_64-"${VERSION}".run \
-        -V "${VERSION}"
+    ./gpu4singularity --verbose -u http://us.download.nvidia.com/XFree86/Linux-x86_64/"${VERSION}"/NVIDIA-Linux-x86_64-"${VERSION}".run -V "${VERSION}"
     rm gpu4singularity
-
-    # Install Anaconda
-    wget -c https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
-    bash Anaconda3-2020.02-Linux-x86_64.sh -bfp /opt/conda
-    export PATH=/opt/conda/bin:$PATH
-    conda install -c conda-forge anaconda==22.9.0
-    conda update -c conda-forge
-
-    # Create target dir for non-root-accessible bashrc
-    mkdir -p /opt/etc
-
-    # Define environment name. Doesn't really matter as it's auto-loaded regardless
-    ENVNAME='single_cell_gpu'
-
-    # Create environment using conda
-    conda init bash
-    conda create -f single_cell_gpu.yml -p /opt/etc/$ENV_NAME
-    #conda activate $ENVNAME
-    conda install conda-forge::jax 
-    conda install -c pytorch magma-cuda121 
-    conda install scvi-tools -c conda-forge
     
+    #Install Mamba
+    readonly mamba_installer="Mambaforge-$(uname)-$(uname -m).sh"
+    readonly mamba_version="4.10.3-4"
+    readonly mamba_prefix="/opt/mamba"
+    wget "https://github.com/conda-forge/miniforge/releases/download/${mamba_version}/${mamba_installer}"
+    bash "${mamba_installer}" -b -p "${mamba_prefix}"
+    rm "${mamba_installer}"
+    export PATH="/opt/mamba/bin:$PATH"
+
+    # Create environment using mamba
+    ENVNAME="single_cell_gpu"
+    mamba create -y -n ${ENVNAME} 
+    mamba install pytorch torchvision torchaudio pytorch-cuda=11.8 cuda-nvcc=11.8 -c pytorch -c nvidia -c conda-forge
+    python -m pip install jax[cuda11_pip] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+    python -m pip install scvi-tools pyparsing cycler kiwisolver anndata==0.10.8
+
     # Finalize bashrc file
-    echo "#! /bin/bash\n\nconda activate single_cell_gpu" > ~/.bashrc 
+    echo "#! /bin/bash\n\n# script to activate the conda environment" > ~/.bashrc 
+    mamba init bash
     echo "echo \"Activating ${ENVNAME}\"" >>  ~/.bashrc
-    echo "\nconda activate ${ENVNAME}" >> ~/.bashrc
+    echo "\nmamba activate ${ENVNAME}" >> ~/.bashrc
 
     # Clean up installer files
     conda clean -a
