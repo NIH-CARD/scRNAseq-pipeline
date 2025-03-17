@@ -30,6 +30,7 @@ chromsizes.insert(1, "Start", 0)
 # Input the fragment files with the same input
 fragments_dict = dict(zip(samples, snakemake.input.fragment_file))
 
+
 # Create folds for pseudobulked samples
 os.makedirs(snakemake.params.bed_file_locs, exist_ok=True)
 os.makedirs(snakemake.params.bigwig_file_locs, exist_ok=True)

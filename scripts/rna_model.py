@@ -19,8 +19,8 @@ sc.pp.filter_genes(adata, min_cells=1)
 # Select for the most variable genes
 sc.pp.highly_variable_genes(
     adata, 
-    layer='data',
-    n_top_genes=5000, 
+    layer='log-norm',
+    n_top_genes=500, 
     batch_key=snakemake.params.sample_key)
 
 # Define mitochondria and ribosome genes to remove
@@ -32,7 +32,7 @@ filtered_adata = adata[:, (adata.var['highly_variable']) & ~(adata.var['mt']) & 
 
 # Setup SCVI on the data layer
 scvi.model.SCVI.setup_anndata(
-    filtered_adata, layer="data", batch_key=snakemake.params.sample_key)
+    filtered_adata, layer="log-norm", batch_key=snakemake.params.sample_key)
 
 # Add the parameters of the model
 model = scvi.model.SCVI(
@@ -46,7 +46,7 @@ model = scvi.model.SCVI(
 # Train the model
 model.train(
     max_epochs=1000,
-    accelerator='cpu',  
+    accelerator='gpu',  
     early_stopping=True,
     early_stopping_patience=20
 )

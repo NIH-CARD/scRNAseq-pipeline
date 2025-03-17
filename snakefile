@@ -53,7 +53,8 @@ envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
     'atac': 'envs/snapATAC2.sif',
     'single_cell_gpu': 'envs/single_cell_gpu.sif',
-    'scenicplus': 'envs/scenicplus.sif'
+    'scenicplus': 'envs/scenicplus.sif',
+    'decoupler': 'envs/decoupler.sif'
     }
 
 rule all:
@@ -250,12 +251,12 @@ rule rna_model:
     params:
         model = work_dir+'/data/models/rna/',
         sample_key = sample_key
-    singularity:
-        envs['singlecell']
+    conda:
+        envs['single_cell_gpu']
     threads:
-        32
+        64
     resources:
-        runtime=240, mem_mb=200000#, gpu=2, gpu_model='v100x'
+        runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
     script:
         'scripts/rna_model.py'
 
@@ -387,7 +388,7 @@ rule DGE:
         disease = lambda wildcards, output: output[0].split("_")[-2],
         cell_type = lambda wildcards, output: output[0].split("_")[-3]
     singularity:
-        envs['singlecell']
+        envs['decoupler']
     threads:
         64
     resources:
