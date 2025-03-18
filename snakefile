@@ -51,8 +51,7 @@ min_num_cell_by_counts = 10
 # Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
-    'atac': 'envs/snapATAC2.sif',
-    'single_cell_gpu': 'envs/single_cell_gpu.sif',
+    'single_cell_gpu': 'envs/single_cell_gpu_1.sif',
     'scenicplus': 'envs/scenicplus.sif',
     'decoupler': 'envs/decoupler.sif'
     }
@@ -176,7 +175,7 @@ rule atac_preprocess:
     output:
         atac_anndata=data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_atac.h5ad'
     singularity:
-        envs['atac']
+        envs['singlecell']
     resources:
         runtime=120, mem_mb=50000, disk_mb=10000, slurm_partition='quick' 
     script:
@@ -203,7 +202,7 @@ rule plot_qc_atac:
     input:
         atac_anndata=data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_rna.h5ad'
     singularity:
-        envs['atac']
+        envs['singlecell']
     resources:
         runtime=240, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem'
     script:
@@ -217,7 +216,7 @@ rule filter_atac:
         atac_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
         rna_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_filtered_rna.h5ad'
     singularity:
-        envs['atac']
+        envs['singlecell']
     resources:
         runtime=30, mem_mb=50000, slurm_partition='quick'
     script:
@@ -292,7 +291,7 @@ rule atac_model:
         samples = samples,
         sample_key = sample_key
     singularity:
-        envs['atac']
+        envs['singlecell']
     resources:
         runtime=2880, mem_mb=3000000, slurm_partition='largemem'
     threads:
@@ -341,7 +340,7 @@ rule atac_annotate:
     params:
         samples=samples
     singularity:
-        envs['atac']
+        envs['singlecell']
     resources:
         runtime=2880, disk_mb=500000, mem_mb=300000
     script:
@@ -408,7 +407,7 @@ rule DAR:
         disease = lambda wildcards, output: output[0].split("_")[-2],
         cell_type = lambda wildcards, output: output[0].split("_")[-3]
     singularity:
-        envs['atac']
+        envs['singlecell']
     threads:
         64
     resources:
