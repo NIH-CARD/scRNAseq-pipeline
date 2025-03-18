@@ -1,3 +1,4 @@
+import anndata as ad
 import scvi
 import scanpy as sc
 import torch
@@ -11,7 +12,7 @@ scvi.settings.seed = 0
 torch.set_float32_matmul_precision('high')
 
 # Read in AnnData atlas object
-adata = sc.read_h5ad(snakemake.input.merged_rna_anndata)
+adata = ad.read_h5ad(snakemake.input.merged_rna_anndata)
 
 # Double check that no transcripts not found in cells are in the atlas
 sc.pp.filter_genes(adata, min_cells=1)
@@ -32,11 +33,11 @@ filtered_adata = adata[:, (adata.var['highly_variable']) & ~(adata.var['mt']) & 
 
 # Setup SCVI on the data layer
 scvi.model.SCVI.setup_anndata(
-    filtered_adata, layer="log-norm", batch_key=snakemake.params.sample_key)
+    adata, layer="log-norm", batch_key=snakemake.params.sample_key)
 
 # Add the parameters of the model
 model = scvi.model.SCVI(
-    filtered_adata, 
+    adata, 
     dispersion="gene-batch", 
     n_layers=2, 
     n_latent=30, 

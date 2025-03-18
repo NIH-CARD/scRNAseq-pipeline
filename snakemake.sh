@@ -10,7 +10,6 @@
 module purge
 module load apptainer
 module load snakemake/7.7.0
-module load cuda/
 
 # Pull profile, this will only run once, and is required for running on Biowulf
 git clone https://github.com/NIH-HPC/snakemake_profile.git
@@ -18,9 +17,10 @@ git clone https://github.com/NIH-HPC/snakemake_profile.git
 # Pull the containers
 apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:0.4
-apptainer pull envs/single_cell_gpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu:0.4
+apptainer pull envs/single_cell_gpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu:0.8
+
 apptainer pull envs/scenicplus.sif docker://litd/docker-scenicplus:latest
-apptainer pull decoupler.sif docker://deeenes/omnipath-decoupler
+apptainer pull envs/decoupler.sif docker://deeenes/omnipath-decoupler
 
 # Load singularity
 module load singularity/4.1.5
@@ -29,4 +29,4 @@ module load singularity/4.1.5
 . /usr/local/current/singularity/app_conf/sing_binds
 
 # RUN SCRIPT
-snakemake --cores all --profile snakemake_profile --use-singularity
+snakemake --cores all --profile snakemake_profile --use-singularity 

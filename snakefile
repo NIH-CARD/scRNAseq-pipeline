@@ -51,7 +51,7 @@ min_num_cell_by_counts = 10
 # Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
     'singlecell': 'envs/single_cell_cpu.sif', 
-    'single_cell_gpu': 'envs/single_cell_gpu_1.sif',
+    'single_cell_gpu': 'envs/single_cell_gpu.sif',
     'scenicplus': 'envs/scenicplus.sif',
     'decoupler': 'envs/decoupler.sif'
     }
@@ -256,8 +256,10 @@ rule rna_model:
         64
     resources:
         runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
-    script:
-        'scripts/rna_model.py'
+    shell:
+        "singularity run --nv envs/single_cell_gpu_1.sif python /data/CARD_singlecell/SN_atlas/scripts/rna_model.py"
+    """script:
+        'scripts/rna_model.py'"""
 
 rule annotate:
     input:
@@ -298,29 +300,6 @@ rule atac_model:
         64
     script:
         work_dir+'/scripts/merge_atac.py' 
-
-"""
-# THIS IS EXPERIMENTAL AND NOT QUITE WORKING AND HARDCODED TO TEST EXAMPLE
-rule atac_model:
-    input:
-        atac_anndata = expand(
-            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
-            batch=batches,
-            sample=samples
-            )
-    output:
-        atac_umap = work_dir+'/data/atac_umap.csv',
-        atac_var = work_dir+'/data/atac_var_selected.csv',
-        
-    singularity:
-        envs['atac']
-    threads:
-        64
-    resources:
-        runtime=2880, disk_mb=500000, mem_mb=300000, gpu=4
-    script:
-        'scripts/atac_model.py'
-"""
 
 rule atac_annotate:
     input:
