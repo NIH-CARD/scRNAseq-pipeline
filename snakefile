@@ -250,7 +250,7 @@ rule rna_model:
     params:
         model = work_dir+'/data/models/rna/',
         sample_key = sample_key
-    conda:
+    singularity:
         envs['single_cell_gpu']
     threads:
         64
