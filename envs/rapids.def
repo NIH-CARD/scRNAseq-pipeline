@@ -11,6 +11,9 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     # Force loading of copied bashrc for interactive shell
     source /opt/etc/bashrc
 
+%files
+    rapids_singlecell.yml
+
 %post
     # Create target dir for non-root-accessible bashrc
     mkdir -p /opt/etc
@@ -29,22 +32,22 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
     export VERSION=375.66
     ./gpu4singularity --verbose -u http://us.download.nvidia.com/XFree86/Linux-x86_64/"${VERSION}"/NVIDIA-Linux-x86_64-"${VERSION}".run -V "${VERSION}"
     rm gpu4singularity
-    
+
     #Install Mamba
     readonly mamba_installer="Mambaforge-$(uname)-$(uname -m).sh"
     readonly mamba_version="4.10.3-4"
     readonly mamba_prefix="/opt/mamba"
     wget "https://github.com/conda-forge/miniforge/releases/download/${mamba_version}/${mamba_installer}"
+    #rm Anaconda3-2024.10-1-Linux-x86_64.sh
     bash "${mamba_installer}" -b -p "${mamba_prefix}"
+    #export PATH=/opt/conda/bin:$PATH
     rm "${mamba_installer}"
     export PATH="/opt/mamba/bin:$PATH"
 
     # Create environment using mamba
-    ENVNAME="single_cell_gpu"
-    mamba create -y -n ${ENVNAME} 
-    mamba install pytorch torchvision torchaudio pytorch-cuda=11.8 cuda-nvcc=11.8 -c pytorch -c nvidia -c conda-forge
-    python -m pip install jax[cuda11_pip] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-    python -m pip install scvi-tools pyparsing cycler kiwisolver anndata==0.10.8
+    ENVNAME="rapids"
+    mamba env create -f rapids_singlecell.yml -p /opt/mamba/$ENVNAME
+    python -m pip install rapids-singlecell cupy-cuda11x cudf -c rapidsai
 
     # Finalize bashrc file
     echo "#! /bin/bash\n\n# script to activate the conda environment" > ~/.bashrc 

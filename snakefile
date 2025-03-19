@@ -481,7 +481,7 @@ rule DAR:
         runtime=1440, disk_mb=200000, mem_mb=200000
     script:
         'scripts/atac_DAR.py'
-
+   
 rule multiome_output:
     input:
         merged_cistopic_adata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad',
@@ -509,3 +509,4 @@ rule export_celltypes:
         runtime=120, mem_mb=300000
     script:
         'scripts/export_celltype.py'
+
