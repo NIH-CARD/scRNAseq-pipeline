@@ -41,7 +41,7 @@ doublet_thresh = 0.15
 min_genes_per_cell = 250
 
 # Define ATAC thresholds
-min_peak_counts = 500
+min_peak_counts = 250
 min_num_cell_by_counts = 10
 
 """========================================================================="""
@@ -70,19 +70,19 @@ rule all:
             disease = diseases
             ),
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
-        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad'
-"""rna_anndata=expand(
-    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
-    zip,
-    batch=batches,
-    sample=samples
-    ),
-atac_anndata = expand(
-    data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
-    zip,
-    sample=samples,
-    batch=batches
-    ),"""
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad',
+        rna_anndata=expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
+            zip,
+            batch=batches,
+            sample=samples
+            ),
+        atac_anndata = expand(
+            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
+            zip,
+            sample=samples,
+            batch=batches
+            ),
         
 # This needs to be forced to run once
 rule cellbender:
@@ -237,7 +237,7 @@ rule merge_multiome_rna:
     params:
         samples=samples
     resources:
-        runtime=120, mem_mb=1000000, disk_mb=10000, slurm_partition='largemem' 
+        runtime=120, mem_mb=300000, disk_mb=10000#, slurm_partition='largemem' 
     script:
         work_dir+'/scripts/merge_anndata.py'
 
@@ -250,16 +250,12 @@ rule rna_model:
     params:
         model = work_dir+'/data/models/rna/',
         sample_key = sample_key
-    singularity:
-        envs['single_cell_gpu']
     threads:
         64
     resources:
         runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
     shell:
-        "singularity run --nv envs/single_cell_gpu_1.sif python /data/CARD_singlecell/SN_atlas/scripts/rna_model.py"
-    """script:
-        'scripts/rna_model.py'"""
+        'scripts/rna_model.sh {input.merged_rna_anndata} {params.sample_key} {output.model_history} {output.merged_rna_anndata} {params.model}'
 
 rule annotate:
     input:
@@ -325,33 +321,6 @@ rule atac_annotate:
     script:
         'scripts/atac_annotate.py'
 
-rule multiome_output:
-    input:
-        merged_atac_anndata = work_dir+'/atlas/05_annotated_anndata_atac.h5ad',
-        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
-    output:
-        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
-    singularity:
-        envs['singlecell']
-    script:
-        'scripts/merge_muon.py'
-
-rule export_celltypes:
-    input:
-        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
-    output:
-        celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
-        celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
-    params:
-        cell_type = lambda wildcards, output: output[0].split('/')[-2]
-    singularity:
-        envs['singlecell']
-    threads:
-        8
-    resources:
-        runtime=120, mem_mb=300000
-    script:
-        'scripts/export_celltype.py'
 
 rule DGE:
     input:
@@ -480,3 +449,31 @@ rule cistopic_merge_objects:
         runtime=1440, mem_mb=2000000, slurm_partition='largemem'
     script:
         'scripts/merge_cistopic_and_adata.py'
+
+rule multiome_output:
+    input:
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
+    output:
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
+    singularity:
+        envs['singlecell']
+    script:
+        'scripts/merge_muon.py'
+
+rule export_celltypes:
+    input:
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
+    output:
+        celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
+        celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
+    params:
+        cell_type = lambda wildcards, output: output[0].split('/')[-2]
+    singularity:
+        envs['singlecell']
+    threads:
+        8
+    resources:
+        runtime=120, mem_mb=300000
+    script:
+        'scripts/export_celltype.py'
