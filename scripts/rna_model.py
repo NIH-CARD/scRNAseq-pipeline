@@ -5,14 +5,17 @@ import torch
 import pandas as pd
 import scipy
 import numpy as np
+import sys
 
 print(torch.cuda.is_available())
 
 scvi.settings.seed = 0
 torch.set_float32_matmul_precision('high')
 
+print(sys.argv)
+
 # Read in AnnData atlas object
-adata = ad.read_h5ad(snakemake.input.merged_rna_anndata)
+adata = ad.read_h5ad(sys.argv[1])
 
 # Double check that no transcripts not found in cells are in the atlas
 sc.pp.filter_genes(adata, min_cells=1)
@@ -22,7 +25,7 @@ sc.pp.highly_variable_genes(
     adata, 
     layer='log-norm',
     n_top_genes=500, 
-    batch_key=snakemake.params.sample_key)
+    batch_key=sys.argv[2])
 
 # Define mitochondria and ribosome genes to remove
 adata.var['mt'] = adata.var_names.str.startswith('MT-')
@@ -33,7 +36,7 @@ filtered_adata = adata[:, (adata.var['highly_variable']) & ~(adata.var['mt']) & 
 
 # Setup SCVI on the data layer
 scvi.model.SCVI.setup_anndata(
-    adata, layer="log-norm", batch_key=snakemake.params.sample_key)
+    adata, layer="log-norm", batch_key=sys.argv[2])
 
 # Add the parameters of the model
 model = scvi.model.SCVI(
@@ -55,7 +58,7 @@ model.train(
 # Extract the elbo plot of the model and save the values
 elbo = model.history['elbo_train']
 elbo['elbo_validation'] = model.history['elbo_validation']
-elbo.to_csv(snakemake.output.model_history, index=False)
+elbo.to_csv(sys.argv[3], index=False)
 
 # Convert the cell barcode to the observable matrix X_scvi which neighbors and UMAP can be calculated from
 adata.obs['atlas_identifier'] = adata.obs.index.to_list()
@@ -70,6 +73,6 @@ sc.tl.leiden(adata, key_added='leiden')
 sc.tl.leiden(adata, resolution=.5, key_added='leiden_05')
 
 # Save the anndata object
-adata.write_h5ad(snakemake.output.merged_rna_anndata, compression='gzip')
+adata.write_h5ad(sys.argv[4], compression='gzip')
 
-model.save(snakemake.params.model, overwrite=True)
+model.save(sys.argv[5], overwrite=True)

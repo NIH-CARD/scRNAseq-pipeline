@@ -237,7 +237,7 @@ rule merge_multiome_rna:
     params:
         samples=samples
     resources:
-        runtime=120, mem_mb=1000000, disk_mb=10000, slurm_partition='largemem' 
+        runtime=120, mem_mb=300000, disk_mb=10000#, slurm_partition='largemem' 
     script:
         work_dir+'/scripts/merge_anndata.py'
 
@@ -250,16 +250,12 @@ rule rna_model:
     params:
         model = work_dir+'/data/models/rna/',
         sample_key = sample_key
-    singularity:
-        envs['single_cell_gpu']
     threads:
         64
     resources:
         runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
     shell:
-        "singularity run --nv envs/single_cell_gpu_1.sif python /data/CARD_singlecell/SN_atlas/scripts/rna_model.py"
-    """script:
-        'scripts/rna_model.py'"""
+        'scripts/rna_model.sh {input.merged_rna_anndata} {params.sample_key} {output.model_history} {output.merged_rna_anndata} {params.model}'
 
 rule annotate:
     input:
