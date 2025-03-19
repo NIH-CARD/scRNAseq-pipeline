@@ -44,6 +44,9 @@ min_genes_per_cell = 250
 min_peak_counts = 250
 min_num_cell_by_counts = 10
 
+# IMPORTANT
+bins=False
+
 """========================================================================="""
 """                                  Workflow                               """
 """========================================================================="""
@@ -271,7 +274,9 @@ rule annotate:
     script:
         'scripts/annotate.py'
 
-rule atac_model:
+"""LEGACY BIN METHOD"""
+
+"""rule atac_bins_model:
     input:
         cell_annotate = work_dir+'/data/rna_cell_annot.csv',
         metadata_table=metadata_table,
@@ -297,7 +302,7 @@ rule atac_model:
     script:
         work_dir+'/scripts/merge_atac.py' 
 
-rule atac_annotate:
+rule atac_bins_annotate:
     input:
         atac_anndata = expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
@@ -319,35 +324,7 @@ rule atac_annotate:
     resources:
         runtime=2880, disk_mb=500000, mem_mb=300000
     script:
-        'scripts/atac_annotate.py'
-
-rule multiome_output:
-    input:
-        merged_atac_anndata = work_dir+'/atlas/05_annotated_anndata_atac.h5ad',
-        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
-    output:
-        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
-    singularity:
-        envs['singlecell']
-    script:
-        'scripts/merge_muon.py'
-
-rule export_celltypes:
-    input:
-        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
-    output:
-        celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
-        celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
-    params:
-        cell_type = lambda wildcards, output: output[0].split('/')[-2]
-    singularity:
-        envs['singlecell']
-    threads:
-        8
-    resources:
-        runtime=120, mem_mb=300000
-    script:
-        'scripts/export_celltype.py'
+        'scripts/atac_bins_annotate.py'"""
 
 rule DGE:
     input:
@@ -369,26 +346,6 @@ rule DGE:
         runtime=1440, disk_mb=200000, mem_mb=200000
     script:
         'scripts/rna_DGE.py'
-
-rule DAR:
-    input:
-        atac_anndata = work_dir+'data/celltypes/{cell_type}/atac.h5ad'
-    output:
-        output_DAR_data = work_dir+'/data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
-        output_figure = work_dir+'/figures/{cell_type}/atac_{cell_type}_{disease}_DAR.png'
-    params:
-        disease_param = disease_param,
-        control = control,
-        disease = lambda wildcards, output: output[0].split("_")[-2],
-        cell_type = lambda wildcards, output: output[0].split("_")[-3]
-    singularity:
-        envs['singlecell']
-    threads:
-        64
-    resources:
-        runtime=1440, disk_mb=200000, mem_mb=200000
-    script:
-        'scripts/atac_DAR.py'
 
 rule cistopic_pseudobulk:
     input:
@@ -469,10 +426,86 @@ rule cistopic_merge_objects:
             )
     output:
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
-        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad'
+        merged_cistopic_adata = work_dir + '/atlas/03_merged_cistopic_atac.h5ad'
     singularity:
         envs['scenicplus']
     resources:
         runtime=1440, mem_mb=2000000, slurm_partition='largemem'
     script:
         'scripts/merge_cistopic_and_adata.py'
+
+rule atac_peaks_model:
+    input:
+        merged_atac_anndata = work_dir+'/atlas/03_annotated_cistopic_atac.h5ad'
+    output:
+        merged_atac_anndata = work_dir+'/atlas/04_modeled_anndata_atac.h5ad',
+        atac_model_history = work_dir+'/model_elbo/atac_model_history.csv'
+    params:
+        atac_model = work_dir+'/data/models/atac/',
+        sample_key = sample_key
+    threads:
+        64
+    resources:
+        runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
+    shell:
+        'scripts/atac_model.sh {input.merged_rna_anndata} {params.sample_key} {output.atac_model_history} {output.merged_rna_anndata} {params.atac_model}'
+
+rule atac_peaks_annotate:
+    input:
+        merged_atac_anndata = work_dir+'/atlas/04_modeled_anndata_atac.h5ad',
+        annot_csv = work_dir+'/data/rna_cell_annot.csv'
+    output:
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad'
+    singularity:
+        envs['singlecell']
+    resources:
+        runtime=240, mem_mb=300000
+    script:
+        'scripts/atac_annotate.py'
+rule DAR:
+    input:
+        atac_anndata = work_dir+'data/celltypes/{cell_type}/atac.h5ad'
+    output:
+        output_DAR_data = work_dir+'/data/significant_genes/atac/atac_{cell_type}_{disease}_DAR.csv',
+        output_figure = work_dir+'/figures/{cell_type}/atac_{cell_type}_{disease}_DAR.png'
+    params:
+        disease_param = disease_param,
+        control = control,
+        disease = lambda wildcards, output: output[0].split("_")[-2],
+        cell_type = lambda wildcards, output: output[0].split("_")[-3]
+    singularity:
+        envs['singlecell']
+    threads:
+        64
+    resources:
+        runtime=1440, disk_mb=200000, mem_mb=200000
+    script:
+        'scripts/atac_DAR.py'
+
+rule multiome_output:
+    input:
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad',
+        merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
+    output:
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
+    singularity:
+        envs['singlecell']
+    script:
+        'scripts/merge_muon.py'
+
+rule export_celltypes:
+    input:
+        merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
+    output:
+        celltype_atac = work_dir+'data/celltypes/{cell_type}/atac.h5ad',
+        celltype_rna = work_dir+'data/celltypes/{cell_type}/rna.h5ad'
+    params:
+        cell_type = lambda wildcards, output: output[0].split('/')[-2]
+    singularity:
+        envs['singlecell']
+    threads:
+        8
+    resources:
+        runtime=120, mem_mb=300000
+    script:
+        'scripts/export_celltype.py'
