@@ -15,7 +15,6 @@ module load snakemake/7.7.0
 git clone https://github.com/NIH-HPC/snakemake_profile.git
 
 # Pull the containers
-apptainer pull envs/snapATAC2.sif oras://quay.io/adamcatchingdti/snapatac2
 apptainer pull envs/single_cell_cpu.sif oras://quay.io/adamcatchingdti/single_cell_cpu:0.4
 apptainer pull envs/single_cell_gpu.sif oras://quay.io/adamcatchingdti/single_cell_gpu:0.8
 
