@@ -44,8 +44,6 @@ min_genes_per_cell = 250
 min_peak_counts = 250
 min_num_cell_by_counts = 10
 
-# IMPORTANT
-bins=False
 
 """========================================================================="""
 """                                  Workflow                               """
@@ -73,7 +71,7 @@ rule all:
             disease = diseases
             ),
         merged_cistopic_object = work_dir + '/data/pycisTopic/merged_cistopic_object.pkl',
-        merged_cistopic_adata = work_dir + '/atlas/05_annotated_cistopic_atac.h5ad',
+        merged_cistopic_adata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad',
         rna_anndata=expand(
             data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad', 
             zip,

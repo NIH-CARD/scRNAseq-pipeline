@@ -27,5 +27,10 @@ module load singularity/4.1.5
 # Bind external directories on Biowulf
 . /usr/local/current/singularity/app_conf/sing_binds
 
+# Update permissions on the bash scripts 
+chmod 777 scripts/rna_model.sh
+chmod 777 scripts/cell_bender.sh
+chmod 777 scripts/atac_model.sh
+
 # RUN SCRIPT
 snakemake --cores all --profile snakemake_profile --use-singularity 
