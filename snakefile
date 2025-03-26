@@ -51,8 +51,7 @@ min_num_cell_by_counts = 10
 
 # Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
-    'singlecell': 'envs/single_cell_cpu.sif', 
-    'single_cell_gpu': 'envs/single_cell_gpu.sif',
+    'singlecell': 'envs/single_cell_gpu.sif',
     'scenicplus': 'envs/scenicplus.sif',
     'decoupler': 'envs/decoupler.sif'
     }
