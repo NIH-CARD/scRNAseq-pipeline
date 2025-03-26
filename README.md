@@ -10,7 +10,7 @@ The modules of Scanpy (https://github.com/scverse/scanpy), SCVI (https://github.
 
 ## Pipeline
 
-![screenshot](images/multiome_pipeline.png)
+![screenshot](images/scMAVERICS.png)
 
 ### To get started
 
