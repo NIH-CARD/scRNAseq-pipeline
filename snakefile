@@ -51,8 +51,8 @@ min_num_cell_by_counts = 10
 
 # Singularity containers to be downloaded from Quay.io, done in snakemake.sh
 envs = {
-    'singlecell': 'envs/single_cell_cpu.sif', 
-    'single_cell_gpu': 'envs/single_cell_gpu.sif',
+    'snapatac2': 'envs/snapatac2.sif',
+    'singlecell': 'envs/single_cell_gpu.sif',
     'scenicplus': 'envs/scenicplus.sif',
     'decoupler': 'envs/decoupler.sif'
     }
@@ -107,7 +107,8 @@ rule rna_preprocess:
     singularity:
         envs['singlecell']
     params:
-        sample='{sample}'
+        sample='{sample}',
+        sample_key = sample_key
     resources:
         runtime=120, mem_mb=64000, disk_mb=10000, slurm_partition='quick' 
     script:
@@ -184,7 +185,7 @@ rule atac_preprocess:
     output:
         atac_anndata=data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_atac.h5ad'
     singularity:
-        envs['singlecell']
+        envs['snapatac2']
     resources:
         runtime=120, mem_mb=50000, disk_mb=10000, slurm_partition='quick' 
     script:
@@ -201,7 +202,7 @@ rule merge_unfiltered_atac:
     output:
         merged_atac_anndata = work_dir+'/atlas/01_merged_anndata_atac.h5ad'
     singularity:
-        envs['singlecell']
+        envs['snapatac2']
     resources:
         runtime=480, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem' 
     script:
@@ -211,7 +212,7 @@ rule plot_qc_atac:
     input:
         atac_anndata=data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_rna.h5ad'
     singularity:
-        envs['singlecell']
+        envs['snapatac2']
     resources:
         runtime=240, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem'
     script:
@@ -225,7 +226,7 @@ rule filter_atac:
         atac_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_object_atac.h5ad',
         rna_anndata = data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/03_{sample}_anndata_filtered_rna.h5ad'
     singularity:
-        envs['singlecell']
+        envs['snapatac2']
     resources:
         runtime=30, mem_mb=50000, slurm_partition='quick'
     script:
@@ -463,7 +464,7 @@ rule atac_peaks_annotate:
     output:
         merged_cistopic_adata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad'
     singularity:
-        envs['singlecell']
+        envs['snapatac2']
     resources:
         runtime=240, mem_mb=300000
     script:
