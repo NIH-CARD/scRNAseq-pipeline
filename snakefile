@@ -457,7 +457,7 @@ rule atac_peaks_model:
     resources:
         runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
     shell:
-        'scripts/atac_model.sh {input.merged_rna_anndata} {params.sample_key} {output.atac_model_history} {output.merged_rna_anndata} {params.atac_model}'
+        'scripts/atac_model.sh {input.merged_atac_anndata} {params.sample_key} {output.atac_model_history} {output.merged_atac_anndata} {params.atac_model}'
 
 rule atac_peaks_annotate:
     input:
