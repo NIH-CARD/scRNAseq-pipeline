@@ -25,10 +25,16 @@ cm = 1/2.54
 # Set figure context
 sns.set_context('paper')
 
-# Save the AnnData object
+# Define sample key
+sample_key = snakemake.params.sample_key
+
+# Open the AnnData object
 adata = sc.read_h5ad(snakemake.input.merged_rna_anndata) 
 
-for sample in adata.obs['sample'].drop_duplicates().to_list():
+# Check for plots directory and create if not there
+os.makedirs('plots', exist_ok=True)
+
+for sample in adata.obs[sample_key].drop_duplicates().to_list():
 
     # Make plot directory
     try:
@@ -43,7 +49,7 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
     fig.suptitle(f' Sample {sample} ', fontsize=BIGGER_SIZE)
 
     # Violin plot in the first panel
-    sc.pl.violin(adata[adata.obs['sample'] == sample], ['pct_counts_mt'], jitter=0.5, ax=ax[0], show=False)
+    sc.pl.violin(adata[adata.obs[sample_key] == sample], ['pct_counts_mt'], jitter=0.5, ax=ax[0], show=False)
     ax[0].set_ylabel('percent')
     ax[0].set_xticks('')
     ax[0].set_xlim(-.75, .75)
@@ -52,8 +58,8 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
 
     # Histogram of values in the second panel
     y, x, _ = ax[1].hist(
-        adata[adata.obs['sample'] == sample].obs['pct_counts_mt'], 
-        bins=int(np.sqrt(adata[adata.obs['sample'] == sample].n_obs))
+        adata[adata.obs[sample_key] == sample].obs['pct_counts_mt'], 
+        bins=int(np.sqrt(adata[adata.obs[sample_key] == sample].n_obs))
         )
     ax[1].set_yscale("log")
     ax[1].set_xlabel('percent')
@@ -69,7 +75,7 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
     fig.suptitle(f' Sample {sample} ', fontsize=BIGGER_SIZE)
 
     # Violin plot in the first panel
-    sc.pl.violin(adata[adata.obs['sample'] == sample], ['pct_counts_rb'], jitter=0.5, ax=ax[0], show=False)
+    sc.pl.violin(adata[adata.obs[sample_key] == sample], ['pct_counts_rb'], jitter=0.5, ax=ax[0], show=False)
     ax[0].set_ylabel('percent')
     ax[0].set_xlim(-.75, .75)
     ax[0].plot([-.5, .5], [15, 15], '--r')
@@ -77,8 +83,8 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
 
     # Histogram of values in the second panel
     y, x, _ = ax[1].hist(
-        adata[adata.obs['sample'] == sample].obs['pct_counts_rb'], 
-        bins=int(np.sqrt(adata[adata.obs['sample'] == sample].n_obs))
+        adata[adata.obs[sample_key] == sample].obs['pct_counts_rb'], 
+        bins=int(np.sqrt(adata[adata.obs[sample_key] == sample].n_obs))
         )
     ax[1].plot([10, 10], [1, y.max()], '--r')
     ax[1].set_ylim(0, y.max())
@@ -94,7 +100,7 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
     fig.suptitle(f' Sample {sample} ', fontsize=BIGGER_SIZE)
 
     # Violin plot in the first panel
-    sc.pl.violin(adata[adata.obs['sample'] == sample], ['n_genes_by_counts'], jitter=0.5, ax=ax[0], show=False)
+    sc.pl.violin(adata[adata.obs[sample_key] == sample], ['n_genes_by_counts'], jitter=0.5, ax=ax[0], show=False)
     ax[0].plot([-.5, .5], [500, 500], '--r')
     ax[0].set_ylabel('total counts')
     ax[0].set_xlim(-.75, .75)
@@ -103,8 +109,8 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
 
     # Histogram of values in the second panel
     y, x, _ = ax[1].hist(
-        adata[adata.obs['sample'] == sample].obs['n_genes_by_counts'], 
-        bins=int(np.sqrt(adata[adata.obs['sample'] == sample].n_obs))
+        adata[adata.obs[sample_key] == sample].obs['n_genes_by_counts'], 
+        bins=int(np.sqrt(adata[adata.obs[sample_key] == sample].n_obs))
         )
     ax[1].plot([500, 500], [1, y.max()], '--r')
     ax[1].set_ylim(0, y.max())
@@ -119,7 +125,7 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
     fig.suptitle(f' Sample {sample} ', fontsize=BIGGER_SIZE)
 
     # Violin plot in the first panel
-    sc.pl.violin(adata[adata.obs['sample'] == sample], ['doublet_score'], jitter=0.5, ax=ax[0], show=False)
+    sc.pl.violin(adata[adata.obs[sample_key] == sample], ['doublet_score'], jitter=0.5, ax=ax[0], show=False)
     ax[0].plot([-.5, .5], [0.25, 0.25], '--r')
     ax[0].set_ylabel('droplet score')
     ax[0].set_xlim(-.75, .75)
@@ -128,8 +134,8 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
 
     
     y, x, _ = ax[1].hist(
-        adata[adata.obs['sample'] == sample].obs['doublet_score'], 
-        bins=int(np.sqrt(adata[adata.obs['sample'] == sample].n_obs))
+        adata[adata.obs[sample_key] == sample].obs['doublet_score'], 
+        bins=int(np.sqrt(adata[adata.obs[sample_key] == sample].n_obs))
         )
     ax[1].plot([0.25, 0.25], [1, y.max()], '--r')
     ax[1].plot([0.25, 0.25], [1, y.max()], '--r')
@@ -140,7 +146,7 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
     plt.savefig(f'plots/{sample}/scrublet_score_per_cell.png', dpi=300)
 
     sc.pl.scatter(
-        adata[adata.obs['sample'] == sample], 
+        adata[adata.obs[sample_key] == sample], 
         "total_counts", 
         "n_genes_by_counts", 
         color="pct_counts_mt",
@@ -148,13 +154,3 @@ for sample in adata.obs['sample'].drop_duplicates().to_list():
         )
     plt.savefig(f'plots/{sample}/num_gene_counts_total.png', dpi=300)
 
-    # Plot UMAP of values
-    sc.pl.umap(
-        adata[adata.obs['sample'] == sample],
-        color=['pct_counts_mt', 'pct_counts_rb', 'doublet_score', 'total_counts', 'n_genes_by_counts'],
-        size=2,
-        ncols=3,
-        cmap='viridis',
-        show=False
-    )
-    plt.savefig(f'plots/{sample}/qc_umap.png', dpi=300)

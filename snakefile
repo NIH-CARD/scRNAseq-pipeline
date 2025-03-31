@@ -140,6 +140,8 @@ rule plot_qc_rna:
         envs['singlecell']
     resources:
         runtime=960, mem_mb=500000, disk_mb=10000, slurm_partition='largemem' 
+    params:
+        sample_key=sample_key
     script:
         work_dir+'/scripts/plot_qc_metrics.py'
 
@@ -215,6 +217,8 @@ rule plot_qc_atac:
         envs['snapatac2']
     resources:
         runtime=240, mem_mb=1500000, disk_mb=10000, slurm_partition='largemem'
+    params:
+        sample_key=sample_key
     script:
         work_dir+'/scripts/atac_plot_qc.py'
 
