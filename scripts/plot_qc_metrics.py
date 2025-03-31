@@ -151,13 +151,3 @@ for sample in adata.obs[sample_key].drop_duplicates().to_list():
         )
     plt.savefig(f'plots/{sample}/num_gene_counts_total.png', dpi=300)
 
-    # Plot UMAP of values
-    sc.pl.umap(
-        adata[adata.obs['sample'] == sample],
-        color=['pct_counts_mt', 'pct_counts_rb', 'doublet_score', 'total_counts', 'n_genes_by_counts'],
-        size=2,
-        ncols=3,
-        cmap='viridis',
-        show=False
-    )
-    plt.savefig(f'plots/{sample}/qc_umap.png', dpi=300)
