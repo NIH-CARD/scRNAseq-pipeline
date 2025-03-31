@@ -130,6 +130,8 @@ rule plot_qc_rna:
         envs['singlecell']
     resources:
         runtime=960, mem_mb=500000, disk_mb=10000, slurm_partition='largemem' 
+    params:
+        sample_key=sample_key
     script:
         work_dir+'/scripts/plot_qc_metrics.py'
 
