@@ -28,8 +28,11 @@ sns.set_context('paper')
 # Define sample key
 sample_key = snakemake.params.sample_key
 
-# Save the AnnData object
+# Open the AnnData object
 adata = sc.read_h5ad(snakemake.input.merged_rna_anndata) 
+
+# Check for plots directory and create if not there
+os.makedirs('plots', exist_ok=True)
 
 for sample in adata.obs[sample_key].drop_duplicates().to_list():
 

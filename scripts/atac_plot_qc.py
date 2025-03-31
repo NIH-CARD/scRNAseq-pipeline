@@ -30,6 +30,9 @@ sample_key = snakemake.params.sample_key
 # Open the AnnData object
 adata = sc.read_h5ad(snakemake.input.merged_atac_anndata) 
 
+# Check for plots directory and create if not there
+os.makedirs('plots', exist_ok=True)
+
 # Iterate through the samples
 for sample in adata.obs[sample_key].to_list():
 
