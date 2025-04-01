@@ -64,9 +64,13 @@ ATAC fragment data is converted into an AnnData object with bins used as the mea
 
 Cells in each sample's ATAC object are filtered for a minimum number of bins per cell. 
 
-### Filtering RNA and ATAC data (rule merge_multiome_rna) 
+### Filtering RNA and ATAC data (rule filter_atac) 
 
 Each sample's QC-filtered RNA and ATAC AnnData objects are filtered for the same cells observed in both samples. Final AnnData objects are saved with a '''03_''' prefix.
+
+### Individual RNA sample merging into atlas (rule merge_multiome_rna)
+
+ATAC-filtered RNA samples are merged from rule filter_atac prior to modeling.
 
 ### RNA modeling (rule rna_model) 
 
