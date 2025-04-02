@@ -18,11 +18,14 @@ metadata_table = work_dir+'/input/example_metadata.csv'
 # Define where celltypes/cell marker gene 
 gene_markers_file = work_dir+'/input/example_marker_genes.csv'
 
+# Key for sequencing batch, used for directory search
+seq_batch_key = 'sequencing_batch'
+
 # Key for samples, required in aggregating while preserving sample info
 sample_key = 'Sample'
 
 # Read in the list of batches and samples
-batches = pd.read_csv(metadata_table)['Use_batch'].tolist()
+batches = pd.read_csv(metadata_table)[seq_batch_key].tolist()
 samples = pd.read_csv(metadata_table)[sample_key].tolist()
 
 # Name of the disease parameter
@@ -274,6 +277,8 @@ rule annotate:
         cell_annotate = work_dir+'/data/rna_cell_annot.csv'
     singularity:
         envs['singlecell']
+    params:
+        seq_batch_key=seq_batch_key
     resources:
         runtime=240, mem_mb=500000, slurm_partition='largemem'
     script:
