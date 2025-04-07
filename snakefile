@@ -12,7 +12,7 @@ metadata_table = work_dir+'/input/example_metadata.csv' # Define where the metad
 gene_markers_file = work_dir+'/input/example_marker_genes.csv' # Define where celltypes/cell marker gene 
 
 """Metadata parameters"""
-seq_batch_key = 'sequencing_batch' # Key for sequencing batch, used for directory search
+seq_batch_key = 'Use_batch' # Key for sequencing batch, used for directory search
 sample_key = 'Sample' # Key for samples, required in aggregating while preserving sample info
 batches = pd.read_csv(metadata_table)[seq_batch_key].tolist() # Read in the list of batches and samples
 samples = pd.read_csv(metadata_table)[sample_key].tolist()
@@ -43,12 +43,7 @@ envs = {
 
 rule all:
     input:
-        rna_anndata=expand(
-            data_dir+'batch{batch}/Multiome/{sample}-ARC/outs/01_{sample}_anndata_object_rna.h5ad', 
-            zip,
-            batch=batches,
-            sample=samples
-            ),
+        genes_by_counts = work_dir+'figures/QC_genes_by_counts.png',
 # Uncomment to view QC data
 """genes_by_counts = work_dir+'figures/QC_genes_by_counts.png'"""
 # Uncomment when you have verified QC metrics
@@ -496,19 +491,6 @@ rule atac_peaks_model:
         runtime=2880, mem_mb=300000, gpu=2, gpu_model='v100x'
     shell:
         'scripts/atac_model.sh {input.merged_atac_anndata} {params.sample_key} {output.atac_model_history} {output.merged_atac_anndata} {params.atac_model}'
-
-rule atac_peaks_annotate:
-    input:
-        merged_atac_anndata = work_dir+'/atlas/04_modeled_anndata_atac.h5ad',
-        annot_csv = work_dir+'/data/rna_cell_annot.csv'
-    output:
-        merged_atac_anndata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad'
-    singularity:
-        envs['singlecell']
-    resources:
-        runtime=240, mem_mb=300000
-    script:
-        'scripts/atac_annotate.py'
 
 rule DAR:
     input:
