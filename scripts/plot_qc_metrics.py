@@ -215,3 +215,13 @@ plt.xlabel('droplet score')
 plt.ylabel('number of droplets')
 plt.title('Doublet score per cell')
 plt.savefig(snakemake.output.doublet_figure, dpi=300)
+
+# Genes by total counts
+sc.pl.scatter(
+    adata, 
+    "total_counts", 
+    "n_genes_by_counts", 
+    color="pct_counts_mt",
+    show=False
+    )
+plt.savefig(snakemake.output.genes_by_counts, dpi=300)
