@@ -441,7 +441,10 @@ rule cistopic_create_objects:
     singularity:
         envs['scenicplus']
     params:
-        sample='{sample}'
+        sample='{sample}',
+        seq_batch_key = seq_batch_key,
+        sample_key = sample_key,
+        disease_param = disease_param
     resources:
         runtime=120, mem_mb=250000, slurm_partition='quick'
     threads:
