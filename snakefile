@@ -523,6 +523,8 @@ rule multiome_output:
         merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
     singularity:
         envs['singlecell']
+    resources:
+        runtime=120, mem_mb=300000, slurm_partition='quick' 
     script:
         'scripts/merge_muon.py'
 
