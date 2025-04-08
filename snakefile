@@ -43,7 +43,7 @@ envs = {
 
 rule all:
     input:
-        genes_by_counts = work_dir+'figures/QC_genes_by_counts.png',
+        genes_by_counts = work_dir+'figures/QC_genes_by_counts.png
 # Uncomment to view QC data
 """genes_by_counts = work_dir+'figures/QC_genes_by_counts.png'"""
 # Uncomment when you have verified QC metrics
@@ -484,7 +484,7 @@ rule atac_peaks_model:
         merged_atac_anndata = work_dir+'/atlas/03_merged_cistopic_atac.h5ad'
     output:
         merged_atac_anndata = work_dir+'/atlas/04_modeled_anndata_atac.h5ad',
-        atac_model_history = work_dir+'/model_elbo/atac_model_history.csv'
+        atac_model_history = work_dir+'/data/model_elbo/atac_model_history.csv'
     params:
         atac_model = work_dir+'/data/models/atac/',
         sample_key = sample_key
@@ -517,7 +517,7 @@ rule DAR:
    
 rule multiome_output:
     input:
-        merged_atac_anndata = work_dir + '/atlas/05_annotated_anndata_atac.h5ad',
+        merged_atac_anndata = work_dir + '/atlas/04_modeled_anndata_atac.h5ad',
         merged_rna_anndata = work_dir+'/atlas/05_annotated_anndata_rna.h5ad'
     output:
         merged_multiome = work_dir+'/atlas/multiome_atlas.h5mu'
