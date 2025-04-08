@@ -14,7 +14,7 @@ rna = mdata['RNA'].copy()
 atac = mdata['ATAC'].copy()
 
 # Write the rna data out
-sc.write_h5ad(snakemake.output.celltype_rna, compression='gzip')
+rna.write_h5ad(snakemake.output.celltype_rna, compression='gzip')
 
 # Write the atac data out
-sc.write_h5ad(snakemake.output.cell_type_atac, compression='gzip')
+atac.write_h5ad(snakemake.output.celltype_atac, compression='gzip')
