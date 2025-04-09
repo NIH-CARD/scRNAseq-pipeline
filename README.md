@@ -1,7 +1,7 @@
 # scMAVERICS
 
 
-## single-cell Multiome Analysis using Variational-inference and Enhancer-driven Regulatory-networks to Inform Cell-atlas Structure
+## single-cell Analysis using Variational-inference and to Inform Cell-atlas Structure
 
 Focus on the analysis, not the processing. 
 
@@ -25,7 +25,7 @@ Copy this repository to where you will be working with your data. This folder wi
     - Names of the control condition, called 'control' in the example
     - A list of conditions to compare to the control, called 'diseases' in the example
 - Cell-typing table with marker genes, in .csv format, see example in `input/example_marker_genes.csv`
-- Directory of the CellRanger output, the data here is the output of `CellRanger-ARC`, requires the data heirarchy of `<data directory>/batch<Sequencing batch>/Multiome/<Sample>-ARC/outs/`
+- Directory of the CellRanger output, the data here is the output of `CellRanger`, where each sample is contained in a separate data directory folder; starting with `<data_dir>/<sample>/raw_feature_bc_matrix.h5` for each sample
 
 In addition, the `snakefile` requires modifications to fit your project. The top section "Parameter" should be modified for your dataset, include quality control values, where the input metadata and cell/cell gene marker files are stored. Input files should have their values match the parameters section.
 
@@ -57,18 +57,6 @@ Parameters from the processing step are used to filter the cells from each sampl
 
 Each individual RNA AnnData object are merged into a single QC-filtered object for downstream analysis. This isn't required to be run in a normal workflow.
 
-### ATAC processing (rule atac_preprocess)
-
-ATAC fragment data is converted into an AnnData object with bins used as the measured variable in each cell. One object is created for each sample.
-
-### ATAC QC (rule filter_atac) 
-
-Cells in each sample's ATAC object are filtered for a minimum number of bins per cell. 
-
-### Filtering RNA and ATAC data (rule filter_atac) 
-
-Each sample's QC-filtered RNA and ATAC AnnData objects are filtered for the same cells observed in both samples. Final AnnData objects are saved with a '''03_''' prefix.
-
 ### Individual RNA sample merging into atlas (rule merge_multiome_rna)
 
 ATAC-filtered RNA samples are merged from rule filter_atac prior to modeling.
@@ -81,21 +69,9 @@ Filtered RNA samples are merged into an atlas and multidimensional scaling is pe
 
 Cell types of the modeled and clustered RNA atlas are estimated using over-representation analysis and a currated list of cell gene markers.
 
-### ATAC modeling (rule atac_model) 
-
-Using snapATAC2 for only read/write, both create a AnnDataSet object to run batch-corrected spectral analysis and scaling; resulting in a leiden-clustered UMAP AnnData object
-
-### ATAC annotation (rule atac_annotate) 
-
-Map the celltype from the RNA atlas onto the ATAC atlas by cell
-
-### Merging to one multiome object (rule multiome_output) 
-
-Both atlases are merged into a single muon AnnData object for portability.
-
 ### Separate atlas into individual celltypes (rule export_celltypes) 
 
 Slice the multiome atlas into individual RNA and ATAC AnnData objects by celltype
 
-### Differential Gene Expression and Differentially Accessible Chromatin (rule DGE and DAR) 
-From the individual RNA and ATAC AnnData objects, separated by celltype, pseudobulk and compare the expression of RNA transcripts and ATAC availability, export lists of genes/genome bins with fold-changes and p-values, as well as pseudobulked objects
+### Differential Gene Expression (rule DGE) 
+From the individual RNA AnnData objects, separated by celltype, pseudobulk and compare the expression of RNA transcripts, export lists of genes bins with fold-changes and p-values, as well as pseudobulked objects
