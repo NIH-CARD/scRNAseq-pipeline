@@ -29,15 +29,15 @@ Copy this repository to where you will be working with your data. This folder wi
 In addition, the `snakefile` requires modifications to fit your project. The top section "Parameter" should be modified for your dataset, include quality control values, where the input metadata and cell/cell gene marker files are stored. Input files should have their values match the parameters section.
 
 #### Outputs:
-- RNA and ATAC Multiome atlas object (multiome_atlas.h5ad)
-- List of differentially expressed genes and accessible regions (data/significant_genes/(rna or atac)/(celltype)_(disease)_(DGE or DAR).csv
+- RNA atlas object (05_annotated_anndata_rna.h5ad)
+- List of differentially expressed genes and accessible regions (data/significant_genes/<rna>/<celltype_disease_DGE>.csv
 - Preprocessed and QC-filtered AnnData objects for each sample
 
 #### Current version:
 - Uses Singularity images for reproducible runs (scVI modeling will be slow until a GPU-enabled image is created)
 - Snakemake runs steps until all output files are created
 - Genes used for celltyping are input from `input/example_marker_genes.csv`
-- Both RNA and ATAC processing has to be done to run this pipeline 
+- RNA processing has to be done to run this pipeline 
 - Data needs to be stored in a specific heirarchy
 - Cellbender needs to be run after CellRanger to compensate for ambient RNA
 - Differential Gene Expression and Differential Accessibility of Regions analysis are done 
@@ -56,10 +56,6 @@ Parameters from the processing step are used to filter the cells from each sampl
 
 Each individual RNA AnnData object are merged into a single QC-filtered object for downstream analysis. This isn't required to be run in a normal workflow.
 
-### Individual RNA sample merging into atlas (rule merge_multiome_rna)
-
-ATAC-filtered RNA samples are merged from rule filter_atac prior to modeling.
-
 ### RNA modeling (rule rna_model) 
 
 Filtered RNA samples are merged into an atlas and multidimensional scaling is performed. A copy of the atlas is made with mitochondiral and ribosomal transcripts removed and only the most variable genes kept. SCVI is used to model the embed dimensions of the atlas, with batch correction, followed by KNN, leiden clustering, and UMAP scaling.
@@ -70,7 +66,7 @@ Cell types of the modeled and clustered RNA atlas are estimated using over-repre
 
 ### Separate atlas into individual celltypes (rule export_celltypes) 
 
-Slice the multiome atlas into individual RNA and ATAC AnnData objects by celltype
+Slice the atlas into individual RNA AnnData objects by celltype
 
 ### Differential Gene Expression (rule DGE) 
 From the individual RNA AnnData objects, separated by celltype, pseudobulk and compare the expression of RNA transcripts, export lists of genes bins with fold-changes and p-values, as well as pseudobulked objects
