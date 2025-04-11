@@ -1,4 +1,4 @@
-# scTAVICS
+# scTAVICS (This is a placeholder name)
 
 ## single-cell Transcriptome Analysis using Variational-inference and to Inform Cell-atlas Structure
 
