@@ -1,6 +1,8 @@
-# scTAVICS (This is a placeholder name)
+# scVIRGILS
 
-## single-cell Transcriptome Analysis using Variational-inference and to Inform Cell-atlas Structure
+## single-cell Variational-Inference of Rational Gene Interactions for Laboratory Scientists
+![image](https://github.com/user-attachments/assets/30f4ae91-56b9-488d-8caa-5fa5ff7c8523)
+
 
 Focus on the analysis, not the processing. 
 
@@ -14,7 +16,7 @@ The modules of Scanpy (https://github.com/scverse/scanpy) and SCVI (https://gith
 
 ### To get started
 
-Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in a separate folder to be defined by the user. It is important that the output of your CellRanger-ARC run has the format:`<data directory>/batch<Sequencing batch>/Multiome/<Sample>-ARC/outs/`!
+Copy this repository to where you will be working with your data. This folder will be where output data is stored, while intermediary files will be stored in a separate folder to be defined by the user. It is important that the output of your CellRanger-ARC run has the format:`<data directory>/<Sample>/`!
 
 #### Required inputs:
 - Metadata file in .csv format, example in `input/example_metadata.csv`. A minimal metadata file should include:
